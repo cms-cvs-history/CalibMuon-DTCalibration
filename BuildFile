@@ -5,8 +5,7 @@
 <use name=CondCore/MetaDataService>
 <use name=CondCore/IOVService>
 <use name=RecoLocalMuon/DTRecHit>
-<use name=CondCore/DBOutputService>
-<use name=DataFormats/DTRecHit>
+ <use name=CondCore/DBOutputService>
 <use name=root>
 
 <flags SEAL_PLUGIN_NAME="CalibMuonDTCalibration"> 
@@ -21,6 +20,5 @@
  <use name=CondCore/IOVService>
  <use name=RecoLocalMuon/DTRecHit>
  <use name=CondCore/DBOutputService>
- <use name=DataFormats/DTRecHit>
  <use name=root>
 </export>
