@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2006/06/08 15:49:26 $
- *  $Revision: 1.9 $
+ *  $Date: 2006/06/14 12:28:12 $
+ *  $Revision: 1.11 $
  *  \author G. Cerminara - INFN Torino
  */
 #include "CalibMuon/DTCalibration/src/DTTTrigCalibration.h"
@@ -150,48 +150,34 @@ void DTTTrigCalibration::analyze(const edm::Event & event, const edm::EventSetup
       const DTWireId wireId(layerId, (*digi).wire());
 
       // Check for noisy channels and skip them
-//       if(checkNoisyChannels) {
-// 	bool isNoisy = false;
-// 	bool isFEMasked = false;
-// 	bool isTDCMasked = false;
-// 	statusMap->cellStatus(wireId, isNoisy, isFEMasked, isTDCMasked);
-// 	if(isNoisy) {
-// 	  if(debug)
-// 	    cout << "Wire: " << wireId << " is noisy, skipping!" << endl;
-// 	  continue;
-// 	} 
-//       }
-      
-      bool isNoisy = false;
-      bool isFEMasked = false;
-      bool isTDCMasked = false;
-      statusMap->cellStatus(wireId, isNoisy, isFEMasked, isTDCMasked);
-      if(isNoisy) {
-	if(debug)
-	  cout << "Wire: " << wireId << " is noisy, skipping!" << endl;
-	continue;
-      } 
-
-      if (!isNoisy) {
-	if(debug)
-	  cout << "Wire: " << wireId << " is not noisy, filling" << endl;
-
-	theFile->cd();
-	double offset = 0;
-	if(doSubtractT0) {
-	  const DTLayer* layer = 0;//fake
-	  const GlobalPoint glPt;//fake
-	  offset = theSync->offset(layer, wireId, glPt);
-	}
-	hTBox->Fill((*digi).time()-offset);
-	if(debug) {
-	  cout << "   Filling Time Box:   " << hTBox->GetName() << endl;
-	  cout << "           offset (ns): " << offset << endl;
-	  cout << "           time(ns):   " << (*digi).time()-offset<< endl;
-	}
-	hO->Fill((*digi).wire());
-	
+      if(checkNoisyChannels) {
+	bool isNoisy = false;
+	bool isFEMasked = false;
+	bool isTDCMasked = false;
+	bool isTrigMask = false;
+	bool isDead = false;
+	bool isNohv = false;
+	statusMap->cellStatus(wireId, isNoisy, isFEMasked, isTDCMasked, isTrigMask, isDead, isNohv);
+	if(isNoisy) {
+	  if(debug)
+	    cout << "Wire: " << wireId << " is noisy, skipping!" << endl;
+	  continue;
+	}      
       }
+      theFile->cd();
+      double offset = 0;
+      if(doSubtractT0) {
+	const DTLayer* layer = 0;//fake
+	const GlobalPoint glPt;//fake
+	offset = theSync->offset(layer, wireId, glPt);
+      }
+      hTBox->Fill((*digi).time()-offset);
+      if(debug) {
+	cout << "   Filling Time Box:   " << hTBox->GetName() << endl;
+	cout << "           offset (ns): " << offset << endl;
+	cout << "           time(ns):   " << (*digi).time()-offset<< endl;
+      }
+      hO->Fill((*digi).wire());
     }
   }
 }
