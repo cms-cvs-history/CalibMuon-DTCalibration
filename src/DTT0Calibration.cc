@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2006/06/08 15:41:35 $
- *  $Revision: 1.2 $
+ *  $Date: 2006/06/08 09:51:06 $
+ *  $Revision: 1.1 $
  *  \author G. Cerminara - INFN Torino
  */
 #include "CalibMuon/DTCalibration/src/DTT0Calibration.h"
@@ -212,9 +212,8 @@ void DTT0Calibration::endJob() {
   // Write the t0 map to DB
   edm::Service<cond::service::PoolDBOutputService> dbOutputSvc;
   if( dbOutputSvc.isAvailable() ){
-    size_t callbackToken = dbOutputSvc->callbackToken("DTDBObject");
     try{
-      dbOutputSvc->newValidityForNewPayload<DTT0>(t0s,dbOutputSvc->endOfTime(),callbackToken);
+      dbOutputSvc->newValidityForNewPayload<DTT0>(t0s,dbOutputSvc->endOfTime());
     }catch(const cond::Exception& er){
       cout << er.what() << endl;
     }catch(const std::exception& er){
