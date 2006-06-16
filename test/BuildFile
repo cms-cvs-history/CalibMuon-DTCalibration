@@ -5,3 +5,13 @@
 
 
 
+<library file=DBTools/*.cc name=testDTCalibrationDBTools>
+<flags SEAL_PLUGIN_NAME="testDTCalibrationDBTools">
+ <use name=root>
+ <use name=DataFormats/MuonDetId>
+ <use name=FWCore/ParameterSet>
+ <use name=CondFormats/DTObjects>
+ <use name=FWCore/Framework>
+ <use name=CondFormats/DataRecord>
+ <use name=CondCore/DBOutputService>
+</library>
