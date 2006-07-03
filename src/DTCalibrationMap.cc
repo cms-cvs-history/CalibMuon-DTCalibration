@@ -2,12 +2,12 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: $
- *  $Revision: $
+ *  $Date: 2006/06/16 12:22:38 $
+ *  $Revision: 1.1 $
  *  \author G. Cerminara - INFN Torino
  */
 
-#include "DTCalibrationFile.h"
+#include "CalibMuon/DTCalibration/src/DTCalibrationMap.h"
 
 #include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -24,7 +24,7 @@ using namespace edm;
 
 
 
-DTCalibrationFile::DTCalibrationFile(const ParameterSet& pset) {
+DTCalibrationMap::DTCalibrationMap(const ParameterSet& pset) {
   nFields =  pset.getUntrackedParameter<int>("nFields", 4);
   calibConstFileName = pset.getUntrackedParameter<string>("calibConstFileName", "dummy.txt");
   calibConstGranularity = pset.getUntrackedParameter<string>("calibConstGranularity","bySL");
@@ -48,33 +48,33 @@ DTCalibrationFile::DTCalibrationFile(const ParameterSet& pset) {
 
 
 
-DTCalibrationFile::~DTCalibrationFile(){}
+DTCalibrationMap::~DTCalibrationMap(){}
 
 
 
 // Return the t_trig (ns) for a particular wire
-float DTCalibrationFile::tTrig(DTWireId wireId) const {
+float DTCalibrationMap::tTrig(DTWireId wireId) const {
  return getField(wireId, 0);
 }
 
 
 
 // Return the sigma of the t_trig (ns) for a particular wire
-float DTCalibrationFile::sigma_tTrig(DTWireId wireId) const {
+float DTCalibrationMap::sigma_tTrig(DTWireId wireId) const {
  return getField(wireId, 1);
 }
 
  
 
 // Return the mean drift velocity for a particular wire (cm/ns)
-float DTCalibrationFile::meanVDrift(DTWireId wireId) const {
+float DTCalibrationMap::meanVDrift(DTWireId wireId) const {
  return getField(wireId, 2);
 }
 
 
 
 // Return the sigma of the mean drift velocity for a particular wire (cm/ns)
-float DTCalibrationFile::sigma_meanVDrift(DTWireId wireId) const {
+float DTCalibrationMap::sigma_meanVDrift(DTWireId wireId) const {
  return getField(wireId, 3);
 }
 
@@ -82,7 +82,7 @@ float DTCalibrationFile::sigma_meanVDrift(DTWireId wireId) const {
 
 // Get a key to read calibration constants for a particular wire
 // with the given granularity
-DTCalibrationFile::Key DTCalibrationFile::getKey(DTWireId wireId) const {
+DTCalibrationMap::Key DTCalibrationMap::getKey(DTWireId wireId) const {
   if (theGranularity == byChamber){
     return Key(wireId.chamberId(), 0, 0, 0);
   } else if (theGranularity == bySL) {
@@ -97,7 +97,7 @@ DTCalibrationFile::Key DTCalibrationFile::getKey(DTWireId wireId) const {
 
 
 // Get from the map the calibration constants for a particular key
-const DTCalibrationFile::CalibConsts* DTCalibrationFile::getConsts(DTWireId wireId) const {
+const DTCalibrationMap::CalibConsts* DTCalibrationMap::getConsts(DTWireId wireId) const {
   // Create a cache
   static pair<Key, CalibConsts> cache;
 
@@ -123,10 +123,10 @@ const DTCalibrationFile::CalibConsts* DTCalibrationFile::getConsts(DTWireId wire
 
 // Get a particular number (field) between all the calibration
 // constants available for a particluar wire
-float DTCalibrationFile::getField(DTWireId wireId, int field) const {
+float DTCalibrationMap::getField(DTWireId wireId, int field) const {
   const CalibConsts* cals = getConsts(wireId);
   if (cals == 0) {
-    throw cms::Exception("NoCalibConsts") << "DTCalibrationFile:" << endl
+    throw cms::Exception("NoCalibConsts") << "DTCalibrationMap:" << endl
 						<< "No parameters for wire: " << wireId << endl
 						<< "Check the " << calibConstFileName << " file!" << endl;
   } else {
@@ -138,11 +138,11 @@ float DTCalibrationFile::getField(DTWireId wireId, int field) const {
 
 
 // Read the calibration consts from a file 
-void DTCalibrationFile::readConsts(const string& inputFileName) {
+void DTCalibrationMap::readConsts(const string& inputFileName) {
    ifstream file(inputFileName.c_str());
    // Check if the file exists
    if(!file) {
-    cout << "[DTCalibrationFile]***Warning: File: " << inputFileName 
+    cout << "[DTCalibrationMap]***Warning: File: " << inputFileName 
 	 << " not found in current directory!!!" << endl; 
    }
 
@@ -180,7 +180,7 @@ void DTCalibrationFile::readConsts(const string& inputFileName) {
 			    wire_id);
 
     if(!checkGranularity(wireCalib.first))
-       cout << "[DTCalibrationFile]***Warning: the CalibConstFile is not consistent with the selected granularity!" << endl;
+       cout << "[DTCalibrationMap]***Warning: the CalibConstFile is not consistent with the selected granularity!" << endl;
 
 
     // Read the calibration constants
@@ -189,7 +189,7 @@ void DTCalibrationFile::readConsts(const string& inputFileName) {
 	 back_inserter(wireCalib.second));
     
     if(wireCalib.second.size() !=  nFields){
-      cout << "[DTCalibrationFile]***Warning: the CalibConstFile is not consistent with the number of fields!" << endl;
+      cout << "[DTCalibrationMap]***Warning: the CalibConstFile is not consistent with the number of fields!" << endl;
     }
     
     theMap.insert(wireCalib);
@@ -197,9 +197,9 @@ void DTCalibrationFile::readConsts(const string& inputFileName) {
 }
 
 // Add to the map the calibration consts for a given key 
-void DTCalibrationFile::addCell(Key theKey, const CalibConsts& calibConst) {
+void DTCalibrationMap::addCell(Key theKey, const CalibConsts& calibConst) {
   if(!checkGranularity(theKey))
-    throw cms::Exception("addCell") << "DTCalibrationFile:" << endl
+    throw cms::Exception("addCell") << "DTCalibrationMap:" << endl
 				    << "The added key is not compatible with the selected granularity"
 				    << endl;
 
@@ -207,7 +207,7 @@ void DTCalibrationFile::addCell(Key theKey, const CalibConsts& calibConst) {
 }
 
 // Write the calibration consts to a file 
-void DTCalibrationFile::writeConsts(const string& outputFileName) const {
+void DTCalibrationMap::writeConsts(const string& outputFileName) const {
   ofstream out(outputFileName.c_str());
   for(map<Key,CalibConsts>::const_iterator iter = theMap.begin();
       iter != theMap.end() ; iter++) {
@@ -226,7 +226,7 @@ void DTCalibrationFile::writeConsts(const string& outputFileName) const {
 
 
   // Check the consistency of a given key with the selected granularity
-bool DTCalibrationFile::checkGranularity(Key aKey) const {
+bool DTCalibrationMap::checkGranularity(Key aKey) const {
   bool ret = true;
 
   // Check that the key is consistent with the given granularity

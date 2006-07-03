@@ -1,15 +1,15 @@
-#ifndef DTCalibrationFile_H
-#define DTCalibrationFile_H
+#ifndef DTCalibration_DTCalibrationMap_H
+#define DTCalibration_DTCalibrationMap_H
 
-/** \class DTCalibrationFile
- *  Allow saving calibration constants to txt file.
+/** \class DTCalibrationMap
+ *  Allow saving and retrieving of calibration constants to/from txt file.
  *  This is mainly provided for backward compatibility with the ORCA MuBarDigiParameters file.
  *  Can be used to save an arbitrary number of constants with the
  *  needed granularity and to retrieve them back using the wireId.
  *  The first 4 fields for each key are allocated to ttri, sigma_ttrig, vdrift and sigma_vdrift.
  *
- *  $Date: $
- *  $Revision: $
+ *  $Date: 2006/06/16 12:22:38 $
+ *  $Revision: 1.1 $
  *  \author G. Cerminara - INFN Torino
  */
 
@@ -26,13 +26,13 @@ namespace edm {
   class ParameterSet;
 }
 
-class DTCalibrationFile {
+class DTCalibrationMap {
 public:
   /// Constructor
-  DTCalibrationFile(const edm::ParameterSet& pset);
+  DTCalibrationMap(const edm::ParameterSet& pset);
 
   /// Destructor
-  virtual ~DTCalibrationFile();
+  virtual ~DTCalibrationMap();
 
   // Operations
   
