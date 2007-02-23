@@ -1,0 +1,72 @@
+include "CondCore/DBCommon/data/CondDBSetup.cfi"
+
+#FRONTIER
+# es_source maps_frontier = PoolDBESSource {  
+#     string connect = "frontier://cms_conditions_data/"
+#     untracked bool siteLocalConfig = true
+#     untracked uint32 authenticationMethod = 1
+
+#     VPSet toGet = {
+# 	{string record = "DTReadOutMappingRcd"
+# 	    string tag = "MTCCMap"}
+# 	{string record = "DTT0Rcd" 
+# 	    string tag = "t0MTCC"}
+# 	{string record = "DTTtrigRcd"
+# 	    string tag ="ttrig"}
+#     }
+# }
+################################################################################
+
+#ORCOFF
+# es_source maps_orcoff = PoolDBESSource {
+#     string connect = "oracle://cms_orcoff_int2r/CMS_COND_DT"
+#     untracked string catalog = "relationalcatalog_oracle://cms_orcoff_int2r/CMS_COND_GENERAL"
+#     untracked uint32 authenticationMethod = 1
+#     VPSet toGet = {
+# 	{string record = "DTReadOutMappingRcd"
+# 	    string tag = "MTCCMap"}
+# 	{string record = "DTT0Rcd" 
+# 	    string tag = "t0MTCC"}
+# 	{string record = "DTTtrigRcd"
+# 	    string tag ="ttrig"}
+#     }
+# }
+################################################################################
+
+#SQLITE
+#mapping 
+es_source mapping = PoolDBESSource {  
+    using CondDBSetup
+    string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite_090/MTCCMap.db"
+    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite_090/MTCCCatalog.xml"
+    VPSet toGet = {{
+	    string record = "DTReadOutMappingRcd"
+	    string tag = "MTCCMap"
+	}}
+}
+
+#tzero
+es_source tzero = PoolDBESSource {  
+    using CondDBSetup
+    string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite_090/t0MTCC.db"
+    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite_090/MTCCCatalog.xml"
+    VPSet toGet = {{
+	    string record = "DTT0Rcd" 
+	    string tag = "t0MTCC"
+	}}
+}
+
+#ttrig: here you have to load your favourite ttrig DB
+es_source ttrig = PoolDBESSource {  
+    using CondDBSetup
+    string connect =  "sqlite_file:dummy.db"
+    untracked string catalog = "file:dummy.xml"
+    string timetype = "runnumber"    
+    untracked uint32 authenticationMethod = 0
+    VPSet toGet = {{
+	    string record = "DTTtrigRcd"
+	    string tag ="ttrig"
+	}}
+}
+
+
