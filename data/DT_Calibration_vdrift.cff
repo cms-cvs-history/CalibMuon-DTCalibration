@@ -1,0 +1,40 @@
+include "CondCore/DBCommon/data/CondDBSetup.cfi"
+
+#FRONTIER
+# es_source vdrift_frontier = PoolDBESSource {  
+#     string connect = "frontier://cms_conditions_data/"
+#     untracked bool siteLocalConfig = true
+#     untracked uint32 authenticationMethod = 1
+#     VPSet toGet = {
+# 	{string record = "DTMtimeRcd"
+# 	    string tag ="vdrift"}
+#     }
+# }
+################################################################################
+
+#ORCOFF
+# es_source vdrift_orcoff = PoolDBESSource {
+#     string connect = "oracle://cms_orcoff_int2r/CMS_COND_DT"
+#     untracked string catalog = "relationalcatalog_oracle://cms_orcoff_int2r/CMS_COND_GENERAL"
+#     untracked uint32 authenticationMethod = 1
+#     VPSet toGet = {
+# 	{string record = "DTMtimeRcd"
+# 	    string tag ="vdrift"}
+#     }
+# }
+################################################################################
+
+#vdrift: here you have to load your favourite vdrift DB
+es_source vdrift = PoolDBESSource {  
+    using CondDBSetup
+    string connect =  "sqlite_file:dummy.db"
+    untracked string catalog = "file:dummy.xml"
+    string timetype = "runnumber"    
+    untracked uint32 authenticationMethod = 0
+    VPSet toGet = {
+	{string record = "DTMtimeRcd"
+	    string tag ="vdrift"}
+    }
+}
+
+
