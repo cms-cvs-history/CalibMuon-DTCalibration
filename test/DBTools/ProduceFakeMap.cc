@@ -2,8 +2,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2007/01/24 16:01:30 $
- *  $Revision: 1.7 $
+ *  $Date: 2007/03/24 16:53:48 $
+ *  $Revision: 1.1 $
  *  \author G. Cerminara - INFN Torino
  */
 
@@ -74,7 +74,7 @@ void ProduceFakeMap::endJob() {
       //Define DTWireId
       DTWireId wireId((*sl)->id(), 0, 0);
       vector<float> consts;
-      consts.push_back(496);
+      consts.push_back(500);
       consts.push_back(0);
       consts.push_back(-1);
       consts.push_back(-1);
