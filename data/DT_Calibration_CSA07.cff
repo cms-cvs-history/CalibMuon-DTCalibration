@@ -10,9 +10,7 @@ include "CondCore/DBCommon/data/CondDBSetup.cfi"
 # 	{string record = "DTT0Rcd" 
 # 	    string tag = "t0Fake"}
 # 	{string record = "DTTtrigRcd"
-# 	    string tag ="ttrigFake"}
-# 	{string record = "DTMtimeRcd"
-# 	    string tag ="vdriftFake"}
+# 	    string tag ="ttrig"}
 #     }
 # }
 ################################################################################
@@ -26,9 +24,7 @@ include "CondCore/DBCommon/data/CondDBSetup.cfi"
 # 	{string record = "DTT0Rcd" 
 # 	    string tag = "t0Fake"}
 # 	{string record = "DTTtrigRcd"
-# 	    string tag ="ttrigFake"}
-# 	{string record = "DTMtimeRcd"
-# 	    string tag ="vdriftFake"}
+# 	    string tag ="ttrig"}
 #     }
 # }
 ################################################################################
@@ -47,28 +43,16 @@ es_source tzero = PoolDBESSource {
 	}}
 }
 
-#ttrig: here you have to load your favourite ttrig DB
+#ttrig: here you have to load your favourite ttrig DB 
 es_source ttrig = PoolDBESSource {  
     using CondDBSetup
-    string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/ttrigFake.db"
-    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/ttrigFake.xml"
+    string connect =  "sqlite_file:ttrig.db"
+    untracked string catalog = "file:ttrig.xml"
     string timetype = "runnumber"    
     untracked uint32 authenticationMethod = 0
     VPSet toGet = {{
 	    string record = "DTTtrigRcd"
-	    string tag ="ttrigFake"
+	    string tag ="ttrig"
 	}}
 }
 
-#vdrift: here you have to load your favourite vdrift DB
-es_source vdrift = PoolDBESSource {  
-    using CondDBSetup
-    string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/vdriftFake.db"
-    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/vdriftFake.xml"
-    string timetype = "runnumber"    
-    untracked uint32 authenticationMethod = 0
-    VPSet toGet = {
-	{string record = "DTMtimeRcd"
-	    string tag ="vdriftFake"}
-    }
-}
