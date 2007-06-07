@@ -1,74 +1,59 @@
 include "CondCore/DBCommon/data/CondDBSetup.cfi"
 
 #FRONTIER
-# es_source maps_frontier = PoolDBESSource {  
-#     string connect = "frontier://cms_conditions_data/"
-#     untracked bool siteLocalConfig = true
-#     untracked uint32 authenticationMethod = 1
-
-#     VPSet toGet = {
-# 	{string record = "DTT0Rcd" 
-# 	    string tag = "t0Fake"}
-# 	{string record = "DTTtrigRcd"
-# 	    string tag ="ttrigFake"}
-# 	{string record = "DTMtimeRcd"
-# 	    string tag ="vdriftFake"}
-#     }
-# }
-################################################################################
-
-#ORCOFF
-# es_source maps_orcoff = PoolDBESSource {
-#     string connect = "oracle://cms_orcoff_int2r/CMS_COND_DT"
-#     untracked string catalog = "relationalcatalog_oracle://cms_orcoff_int2r/CMS_COND_GENERAL"
-#     untracked uint32 authenticationMethod = 1
-#     VPSet toGet = {
-# 	{string record = "DTT0Rcd" 
-# 	    string tag = "t0Fake"}
-# 	{string record = "DTTtrigRcd"
-# 	    string tag ="ttrigFake"}
-# 	{string record = "DTMtimeRcd"
-# 	    string tag ="vdriftFake"}
-#     }
-# }
-################################################################################
-
-#SQLITE
-#tzero
-es_source tzero = PoolDBESSource {  
-    using CondDBSetup
-    string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/t0Fake.db"
-    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/t0Fake.xml"
-    string timetype = "runnumber"    
-    untracked uint32 authenticationMethod = 0
-    VPSet toGet = {{
-	    string record = "DTT0Rcd" 
-	    string tag = "t0Fake"
-	}}
-}
-
-#ttrig: here you have to load your favourite ttrig DB
-es_source ttrig = PoolDBESSource {  
-    using CondDBSetup
-    string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/ttrigFake.db"
-    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/ttrigFake.xml"
-    string timetype = "runnumber"    
-    untracked uint32 authenticationMethod = 0
-    VPSet toGet = {{
-	    string record = "DTTtrigRcd"
-	    string tag ="ttrigFake"
-	}}
-}
-
-#vdrift: here you have to load your favourite vdrift DB
-es_source vdrift = PoolDBESSource {  
-    using CondDBSetup
-    string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/vdriftFake.db"
-    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/vdriftFake.xml"
+es_source maps_frontier = PoolDBESSource {  
+ using CondDBSetup
+    string connect = "frontier://FrontierDev/CMS_COND_DT"
+    untracked bool siteLocalConfig = true
     string timetype = "runnumber"    
     untracked uint32 authenticationMethod = 0
     VPSet toGet = {
+	{string record = "DTT0Rcd" 
+	    string tag = "t0Fake"},
+	{string record = "DTTtrigRcd"
+	    string tag ="ttrigFake"},
 	{string record = "DTMtimeRcd"
 	    string tag ="vdriftFake"}
     }
 }
+################################################################################
+
+#SQLITE
+#tzero
+# es_source tzero = PoolDBESSource {  
+#     using CondDBSetup
+#     string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/t0Fake.db"
+#     untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/t0Fake.xml"
+#     string timetype = "runnumber"    
+#     untracked uint32 authenticationMethod = 0
+#     VPSet toGet = {{
+# 	    string record = "DTT0Rcd" 
+# 	    string tag = "t0Fake"
+# 	}}
+# }
+
+# #ttrig: here you have to load your favourite ttrig DB
+# es_source ttrig = PoolDBESSource {  
+#     using CondDBSetup
+#     string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/ttrigFake.db"
+#     untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/ttrigFake.xml"
+#     string timetype = "runnumber"    
+#     untracked uint32 authenticationMethod = 0
+#     VPSet toGet = {{
+# 	    string record = "DTTtrigRcd"
+# 	    string tag ="ttrigFake"
+# 	}}
+# }
+
+# #vdrift: here you have to load your favourite vdrift DB
+# es_source vdrift = PoolDBESSource {  
+#     using CondDBSetup
+#     string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/vdriftFake.db"
+#     untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite/CSA07/vdriftFake.xml"
+#     string timetype = "runnumber"    
+#     untracked uint32 authenticationMethod = 0
+#     VPSet toGet = {
+# 	{string record = "DTMtimeRcd"
+# 	    string tag ="vdriftFake"}
+#     }
+# }

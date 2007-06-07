@@ -2,32 +2,20 @@ include "CondCore/DBCommon/data/CondDBSetup.cfi"
 
 #FRONTIER
 # es_source maps_frontier = PoolDBESSource {  
-#     string connect = "frontier://cms_conditions_data/"
+#  using CondDBSetup
+#     string connect = "frontier://FrontierDev/CMS_COND_DT"
 #     untracked bool siteLocalConfig = true
-#     untracked uint32 authenticationMethod = 1
-
+#     string timetype = "runnumber"    
+#     untracked uint32 authenticationMethod = 0
 #     VPSet toGet = {
 # 	{string record = "DTT0Rcd" 
-# 	    string tag = "t0Fake"}
+# 	    string tag = "t0Fake"},
 # 	{string record = "DTTtrigRcd"
 # 	    string tag ="ttrig"}
 #     }
 # }
 ################################################################################
 
-#ORCOFF
-# es_source maps_orcoff = PoolDBESSource {
-#     string connect = "oracle://cms_orcoff_int2r/CMS_COND_DT"
-#     untracked string catalog = "relationalcatalog_oracle://cms_orcoff_int2r/CMS_COND_GENERAL"
-#     untracked uint32 authenticationMethod = 1
-#     VPSet toGet = {
-# 	{string record = "DTT0Rcd" 
-# 	    string tag = "t0Fake"}
-# 	{string record = "DTTtrigRcd"
-# 	    string tag ="ttrig"}
-#     }
-# }
-################################################################################
 
 #SQLITE
 #tzero
