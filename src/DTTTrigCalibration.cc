@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2007/03/07 18:32:31 $
- *  $Revision: 1.20 $
+ *  $Date: 2007/03/27 15:44:46 $
+ *  $Revision: 1.21 $
  *  \author G. Cerminara - INFN Torino
  */
 #include "CalibMuon/DTCalibration/src/DTTTrigCalibration.h"
@@ -17,6 +17,7 @@
 
 #include "DataFormats/DTDigi/interface/DTDigiCollection.h"
 #include "DataFormats/MuonDetId/interface/DTWireId.h"
+#include "DataFormats/MuonDetId/interface/DTChamberId.h"
 
 #include "CondFormats/DTObjects/interface/DTTtrig.h"
 
@@ -54,6 +55,9 @@ DTTTrigCalibration::DTTTrigCalibration(const edm::ParameterSet& pset) {
 
   // The TDC time-window (ns)
   maxTDCCounts = 5000 * pset.getUntrackedParameter<int>("tdcRescale", 1);
+
+  //The maximum number of digis per layer
+  maxDigiPerLayer = pset.getUntrackedParameter<int>("maxDigiPerLayer", 2);
 
   // The root file which will contain the histos
   string rootFileName = pset.getUntrackedParameter<string>("rootFileName");
@@ -114,19 +118,46 @@ void DTTTrigCalibration::analyze(const edm::Event & event, const edm::EventSetup
     eventSetup.get<DTStatusFlagRcd>().get(statusMap);
   }
 
-
   if(doSubtractT0)
     theSync->setES(eventSetup);
 
+  //The chambers too noisy in this event
+  vector<DTChamberId> badChambers;
 
   // Iterate through all digi collections ordered by LayerId   
   DTDigiCollection::DigiRangeIterator dtLayerIt;
   for (dtLayerIt = digis->begin();
        dtLayerIt != digis->end();
        ++dtLayerIt){
+
+    // Get the iterators over the digis associated with this LayerId
+    const DTDigiCollection::Range& digiRange = (*dtLayerIt).second;
+
     // The layerId
     const DTLayerId layerId = (*dtLayerIt).first;
     const DTSuperLayerId slId = layerId.superlayerId();
+    const DTChamberId chId = slId.chamberId();
+    bool badChamber=false;
+
+    if(debug)
+    cout<<"----------- Layer "<<layerId<<" -------------"<<endl;
+
+    //Check if the layer is inside a noisy chamber
+    for(vector<DTChamberId>::const_iterator chamber = badChambers.begin(); chamber != badChambers.end(); chamber++){
+      if((*chamber) == chId){
+	badChamber=true;
+	break;
+      }
+    }
+    if(badChamber) continue;
+
+    //Check if the layer has too many digis
+    if((digiRange.second - digiRange.first) > maxDigiPerLayer){
+      if(debug)
+	cout<<"Layer "<<layerId<<"has too many digis ("<<(digiRange.second - digiRange.first)<<")"<<endl;
+      badChambers.push_back(chId);
+      continue;
+    }
 
     // Get the histo from the map
     TH1F *hTBox = theHistoMap[slId];
@@ -148,9 +179,6 @@ void DTTTrigCalibration::analyze(const edm::Event & event, const edm::EventSetup
 	cout << "  New Time Box: " << hO->GetName() << endl;
       theOccupancyMap[layerId] = hO;
     }
-
-    // Get the iterators over the digis associated with this LayerId
-    const DTDigiCollection::Range& digiRange = (*dtLayerIt).second;
 
     // Loop over all digis in the given range
     for (DTDigiCollection::const_iterator digi = digiRange.first;
