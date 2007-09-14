@@ -9,9 +9,11 @@ es_source maps_frontier = PoolDBESSource {
     untracked uint32 authenticationMethod = 0
     VPSet toGet = {
 	{string record = "DTT0Rcd" 
-	    string tag = "t0Fake"},
+	    string tag = "t0FakeCSA07_Sept15"},
 	{string record = "DTTtrigRcd"
 	    string tag ="ttrigCSA07_July6"}
+	#{string record = "DTTtrigRcd"
+	#    string tag ="ttrigCSA07_Sept12"} #same scenario, different "random seed"
     }
 }
 ################################################################################
