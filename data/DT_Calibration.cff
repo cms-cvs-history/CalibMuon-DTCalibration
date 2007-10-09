@@ -4,7 +4,6 @@ include "CondCore/DBCommon/data/CondDBSetup.cfi"
 # es_source maps_frontier = PoolDBESSource {  
 #  using CondDBSetup
 #     string connect = "frontier://FrontierDev/CMS_COND_DT"
-#     untracked bool siteLocalConfig = true
 #     string timetype = "runnumber"    
 #     untracked uint32 authenticationMethod = 0
 #     VPSet toGet = {
@@ -24,7 +23,6 @@ include "CondCore/DBCommon/data/CondDBSetup.cfi"
 es_source mapping = PoolDBESSource {  
     using CondDBSetup
     string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite_090/MTCCMap.db"
-    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite_090/MTCCCatalog.xml"
     string timetype = "runnumber"    
     VPSet toGet = {{
 	    string record = "DTReadOutMappingRcd"
@@ -36,7 +34,6 @@ es_source mapping = PoolDBESSource {
 es_source tzero = PoolDBESSource {  
     using CondDBSetup
     string connect =  "sqlite_file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite_090/t0MTCC.db"
-    untracked string catalog = "file:/afs/cern.ch/cms/Physics/muon/CMSSW/DT/SQLLite_090/MTCCCatalog.xml"
     string timetype = "runnumber"    
     VPSet toGet = {{
 	    string record = "DTT0Rcd" 
@@ -48,7 +45,6 @@ es_source tzero = PoolDBESSource {
 es_source ttrig = PoolDBESSource {  
     using CondDBSetup
     string connect =  "sqlite_file:dummy.db"
-    untracked string catalog = "file:dummy.xml"
     string timetype = "runnumber"    
     untracked uint32 authenticationMethod = 0
     VPSet toGet = {{
