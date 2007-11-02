@@ -1,0 +1,10 @@
+#ES producer for fake ttrig
+include "Geometry/MuonCommonData/data/muonIdealGeometryXML.cfi"
+include "Geometry/DTGeometry/data/dtGeometry.cfi"
+include "Geometry/MuonNumbering/data/muonNumberingInitialization.cfi"
+
+
+es_source = DTFakeT0ESProducer{
+    double t0Mean = 0
+    double t0Sigma = 0
+}
