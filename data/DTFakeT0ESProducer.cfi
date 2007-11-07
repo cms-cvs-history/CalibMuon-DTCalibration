@@ -1,5 +1,5 @@
 #ES producer for fake ttrig
-include "Geometry/MuonCommonData/data/muonIdealGeometryXML.cfi"
+include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
 include "Geometry/DTGeometry/data/dtGeometry.cfi"
 include "Geometry/MuonNumbering/data/muonNumberingInitialization.cfi"
 
