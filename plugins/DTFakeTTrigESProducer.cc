@@ -1,7 +1,7 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2007/06/07 07:55:36 $
+ *  $Date: 2007/07/11 12:20:59 $
  *  $Revision: 1.1 $
  *  \author S. Bolognesi - INFN Torino
  */
@@ -61,7 +61,7 @@ DTTtrig* DTFakeTTrigESProducer::produce(const DTTtrigRcd& iRecord){
 	for(int superlayer=1; superlayer<4; superlayer++){
 	  if(superlayer==2 && station==4) continue;
 	  DTSuperLayerId slId(DTChamberId(wheel, station, sector),superlayer);
-	  tTrigMap->setSLTtrig(slId, tMean, sigma, DTTimeUnits::ns);
+	  tTrigMap->set(slId, tMean, sigma, DTTimeUnits::ns);
 	}
       }
     }
@@ -71,7 +71,7 @@ DTTtrig* DTFakeTTrigESProducer::produce(const DTTtrigRcd& iRecord){
      for(int superlayer=1; superlayer<4; superlayer++){
        if(superlayer==2) continue;
        DTSuperLayerId slId(DTChamberId(wheel, 4, 13),superlayer);
-	 tTrigMap->setSLTtrig(slId, tMean, sigma, DTTimeUnits::ns);
+	 tTrigMap->set(slId, tMean, sigma, DTTimeUnits::ns);
      }  
    }
 
@@ -79,7 +79,7 @@ DTTtrig* DTFakeTTrigESProducer::produce(const DTTtrigRcd& iRecord){
      for(int superlayer=1; superlayer<4; superlayer++){
        if(superlayer==2) continue;
        DTSuperLayerId slId(DTChamberId(wheel, 4, 14),superlayer);
-	 tTrigMap->setSLTtrig(slId, tMean, sigma, DTTimeUnits::ns);
+	 tTrigMap->set(slId, tMean, sigma, DTTimeUnits::ns);
      }  
    }
    

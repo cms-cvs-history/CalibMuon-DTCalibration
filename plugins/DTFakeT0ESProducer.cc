@@ -1,7 +1,7 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2007/07/11 12:20:59 $
+ *  $Date: 2007/11/02 10:47:13 $
  *  $Revision: 1.1 $
  *  \author S. Bolognesi - INFN Torino
  */
@@ -70,7 +70,7 @@ DTT0* DTFakeT0ESProducer::produce(const DTT0Rcd& iRecord){
    int nWires = ((*lIdWire).second).second;
    //Loop on wires of each layer
    for(int wire=0; wire < nWires; wire++){
-     t0Map->setCellT0(DTWireId((*lIdWire).first, wire + firstWire), t0Mean, t0Sigma, DTTimeUnits::counts);
+     t0Map->set(DTWireId((*lIdWire).first, wire + firstWire), t0Mean, t0Sigma, DTTimeUnits::counts);
    }
  }
 
