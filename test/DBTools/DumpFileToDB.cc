@@ -2,8 +2,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2007/03/28 17:01:49 $
- *  $Revision: 1.7 $
+ *  $Date: 2007/11/09 11:22:03 $
+ *  $Revision: 1.7.4.1 $
  *  \author G. Cerminara - INFN Torino
  */
 
@@ -100,10 +100,10 @@ void DumpFileToDB::endJob() {
       cout << "key: " << (*keyAndCalibs).first
 	   << " T0 mean (TDC counts): " << t0mean
 	   << " T0_rms (TDC counts): " << t0rms << endl;
-      tZeroMap->setCellT0((*keyAndCalibs).first,
-			  t0mean,
-			  t0rms,
-			  DTTimeUnits::counts );
+      tZeroMap->set((*keyAndCalibs).first,
+		    t0mean,
+		    t0rms,
+		    DTTimeUnits::counts );
     }
 
     cout << "[DumpFileToDB]Writing tZero object to DB!" << endl;
