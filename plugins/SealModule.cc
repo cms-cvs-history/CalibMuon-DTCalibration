@@ -10,7 +10,6 @@
 #include "CalibMuon/DTCalibration/plugins/DTVDriftCalibration.h"
 #include "CalibMuon/DTCalibration/plugins/DTVDriftWriter.h"
 #include "CalibMuon/DTCalibration/plugins/DTFakeTTrigESProducer.h"
-#include "CalibMuon/DTCalibration/plugins/DTFakeT0ESProducer.h"
 
 
 DEFINE_SEAL_MODULE();
@@ -21,4 +20,3 @@ DEFINE_ANOTHER_FWK_MODULE(DTT0Calibration);
 DEFINE_ANOTHER_FWK_MODULE(DTVDriftCalibration);
 DEFINE_ANOTHER_FWK_MODULE(DTVDriftWriter);
 DEFINE_ANOTHER_FWK_EVENTSETUP_SOURCE(DTFakeTTrigESProducer);
-DEFINE_ANOTHER_FWK_EVENTSETUP_SOURCE(DTFakeT0ESProducer);
