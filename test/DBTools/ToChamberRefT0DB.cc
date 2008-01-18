@@ -2,7 +2,7 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2007/11/09 17:55:34 $
+ *  $Date: 2007/11/12 10:32:13 $
  *  $Revision: 1.1 $
  *  \author S. Bolognesi - INFN Torino
  */
@@ -70,10 +70,10 @@ void ToChamberRefT0DB::endJob() {
 		    (*tzero).first.slId,
 		    (*tzero).first.layerId,
 		    (*tzero).first.cellId);
-    tZeroNewMap->setCellT0(wireId,
-			   t0mean,
-			   t0rms,
-			   DTTimeUnits::counts);
+    tZeroNewMap->set(wireId,
+		     t0mean,
+		     t0rms,
+		     DTTimeUnits::counts);
     if(debug){
       //cout<<"Chamber "<<chamberId<<" has reference "<<(sumT0ByChamber[chamberId]/countT0ByChamber[chamberId]);
       cout<<"Changing t0 of wire "<<wireId<<" from "<<(*tzero).second.t0mean<<" to "<<t0mean<<endl;
