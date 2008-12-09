@@ -37,7 +37,7 @@ process.dumpToFile = cms.EDFilter("DumpDBToFile",
     #untracked string dbToDump = "TZeroDB"
     dbToDump = cms.untracked.string('TTrigDB'),
     calibFileConfig = cms.untracked.PSet(
-        nFields = cms.untracked.int32(4),
+        nFields = cms.untracked.int32(5),
         # VDrift & TTrig
         calibConstGranularity = cms.untracked.string('bySL')
     ),
