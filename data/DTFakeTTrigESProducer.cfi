@@ -1,6 +1,0 @@
-#ES producer for fake ttrig
-
-es_source = DTFakeTTrigESProducer{
-    double tMean = 499.609
-    double sigma = 0
-}
