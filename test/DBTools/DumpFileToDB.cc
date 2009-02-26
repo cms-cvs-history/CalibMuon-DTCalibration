@@ -2,8 +2,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2009/02/10 13:42:52 $
- *  $Revision: 1.14 $
+ *  $Date: 2008/10/03 08:53:22 $
+ *  $Revision: 1.11 $
  *  \author G. Cerminara - INFN Torino
  */
 
@@ -103,8 +103,8 @@ void DumpFileToDB::endJob() {
     for(DTCalibrationMap::const_iterator keyAndCalibs = theCalibFile->keyAndConsts_begin();
 	keyAndCalibs != theCalibFile->keyAndConsts_end();
 	++keyAndCalibs) {
-      float t0mean = (*keyAndCalibs).second[5];
-      float t0rms = (*keyAndCalibs).second[6];
+      float t0mean = (*keyAndCalibs).second[4];
+      float t0rms = (*keyAndCalibs).second[5];
       cout << "key: " << (*keyAndCalibs).first
 	   << " T0 mean (TDC counts): " << t0mean
 	   << " T0_rms (TDC counts): " << t0rms << endl;
@@ -126,9 +126,9 @@ void DumpFileToDB::endJob() {
 	keyAndCalibs != theCalibFile->keyAndConsts_end();
 	++keyAndCalibs) {
       cout << "key: " << (*keyAndCalibs).first
-	   << " Noisy flag: " << (*keyAndCalibs).second[7] << endl;
+	   << " Noisy flag: " << (*keyAndCalibs).second[6] << endl;
       statusMap->setCellNoise((*keyAndCalibs).first,
-			      (*keyAndCalibs).second[7]);
+			      (*keyAndCalibs).second[6]);
     }
 
     cout << "[DumpFileToDB]Writing Noise Map object to DB!" << endl;
@@ -143,9 +143,9 @@ void DumpFileToDB::endJob() {
 	keyAndCalibs != theCalibFile->keyAndConsts_end();
 	++keyAndCalibs) {
       cout << "key: " << (*keyAndCalibs).first
-	   << " dead flag: " << (*keyAndCalibs).second[7] << endl;
+	   << " dead flag: " << (*keyAndCalibs).second[6] << endl;
       deadMap->setCellDead_TP((*keyAndCalibs).first,
-			      (*keyAndCalibs).second[7]);
+			      (*keyAndCalibs).second[6]);
     }
 
     cout << "[DumpFileToDB]Writing Noise Map object to DB!" << endl;
