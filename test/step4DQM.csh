@@ -29,8 +29,6 @@ source /afs/cern.ch/cms/LCG/LCG-2/UI/cms_ui_env.csh
 cd $cmsswDir
 eval `scramv1 runtime -csh`
 
-#if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTkFactValidation_${runn}.root ) ) then
-
     cd ${workDir}/Run${runn}/Ttrig/Validation
 
     foreach lastCrab (crab_0_*)
@@ -48,29 +46,11 @@ eval `scramv1 runtime -csh`
 	exit 1
     endif
 
-#    hadd DTkFactValidation_${runn}.root residuals_*.root
-#    cp DTkFactValidation_${runn}.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
- #   cp DQM_*.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
-#endif
-
-#if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTkFactValidation_${runn}.root ) ) then
-#    echo "File /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTkFactValidation_${runn}.root not found!"
-#    echo "Exiting!"
-#    exit 1
-#endif
-
-##
-##
-
 cd ${cmsswDir}/DQM/DTMonitorModule/test
 
 cp DTkFactValidation_2_DQM_TEMPL_cfg.py ${workDir}/Run${runn}/Ttrig/Validation/${crabDir}/res
 
 cd ${workDir}/Run${runn}/Ttrig/Validation/${crabDir}/res
-
-# add DQM.root files in input
-#unalias ls
-#set resarea = `/res`
 
 setenv SourceDir ${workDir}'/Run'${runn}'/Ttrig/Validation/'${crabDir}'/res'
 
@@ -175,58 +155,6 @@ process.modulo3.histoTag  = 'hResDist_STEP3'
 process.modulo3.STEP = 'STEP3'
 
 
-#process.resolutionTest_step1 = cms.EDFilter("DTResolutionTest",
-#    OutputMEsInRootFile = cms.bool(False),
-#    runningStandalone = cms.untracked.bool(True),
-#    resDistributionTestName = cms.untracked.string('ResidualsDistributionGaussianTest'),
-#    histoTag2D = cms.untracked.string('hResDistVsDist_STEP1'),
-#    calibModule = cms.untracked.bool(True),
-#    meanTestName = cms.untracked.string('ResidualsMeanInRange'),
-#    STEP = cms.untracked.string('STEP1'),
-#    folderRoot = cms.untracked.string(''),
-#    sigmaTestName = cms.untracked.string('ResidualsSigmaInRange'),
-#    debug = cms.untracked.bool(False),
-#    diagnosticPrescale = cms.untracked.int32(1),
-#    histoTag = cms.untracked.string('hResDist_STEP1'),
-#    readFile = cms.untracked.bool(False),
-#    inputFile = cms.untracked.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/RUNPERIODTEMPLATE/ttrig/DTkFactValidation_RUNNUMBERTEMPLATE.root')
-#)
-
-#process.resolutionTest_step2 = cms.EDFilter("DTResolutionTest",
-#    OutputMEsInRootFile = cms.bool(False),
-#    runningStandalone = cms.untracked.bool(True),
-#    resDistributionTestName = cms.untracked.string('ResidualsDistributionGaussianTest'),
-#    histoTag2D = cms.untracked.string('hResDistVsDist_STEP2'),
-#    calibModule = cms.untracked.bool(True),
-#    meanTestName = cms.untracked.string('ResidualsMeanInRange'),
-#    STEP = cms.untracked.string('STEP2'),
-#    folderRoot = cms.untracked.string(''),
-#    sigmaTestName = cms.untracked.string('ResidualsSigmaInRange'),
-#    debug = cms.untracked.bool(False),
-#    diagnosticPrescale = cms.untracked.int32(1),
-#    histoTag = cms.untracked.string('hResDist_STEP2'),
-#    readFile = cms.untracked.bool(False),
-#    inputFile = cms.untracked.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/RUNPERIODTEMPLATE/ttrig/DTkFactValidation_RUNNUMBERTEMPLATE.root')                                        
-#)
-
-#process.resolutionTest_step3 = cms.EDFilter("DTResolutionTest",
-#    OutputMEsInRootFile = cms.bool(True),
-#    runningStandalone = cms.untracked.bool(True),
-#    resDistributionTestName = cms.untracked.string('ResidualsDistributionGaussianTest'),
-#    histoTag2D = cms.untracked.string('hResDistVsDist_STEP3'),
-#    calibModule = cms.untracked.bool(True),
-#    OutputFileName = cms.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/RUNPERIODTEMPLATE/ttrig/SummaryResiduals_RUNNUMBERTEMPLATE.root'),
-#    meanTestName = cms.untracked.string('ResidualsMeanInRange'),
-#    STEP = cms.untracked.string('STEP3'),
-#    folderRoot = cms.untracked.string(''),
-#    sigmaTestName = cms.untracked.string('ResidualsSigmaInRange'),
-#    debug = cms.untracked.bool(False),
-#    diagnosticPrescale = cms.untracked.int32(1),
-#    histoTag = cms.untracked.string('hResDist_STEP3'),
-#    readFile = cms.untracked.bool(False),
-#   inputFile = cms.untracked.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/RUNPERIODTEMPLATE/ttrig/DTkFactValidation_RUNNUMBERTEMPLATE.root')                                         
-#)
-
 
 process.source.processingMode = "RunsAndLumis"
 process.DQMStore.referenceFileName = ''
@@ -236,19 +164,7 @@ process.DQMStore.collateHistograms = False
 process.EDMtoMEConverter.convertOnEndLumi = True
 process.EDMtoMEConverter.convertOnEndRun = False
 
-
-
-#process.dqmSaverMy = cms.EDFilter("DQMFileSaver",
-#    fileName = cms.untracked.string('MuonDT'),
-#    dirName = cms.untracked.string('.'),
-#    workflow = cms.untracked.string('/Muon/Dt/Test1'),
-#    convention = cms.untracked.string('Offline')
-#)
-
 process.p = cms.Path(process.EDMtoMEConverter*process.modulo1*process.modulo2*process.modulo3*process.qTester*process.dqmSaver)
-
-#process.secondStep = cms.Sequence(process.resolutionTest_step1*process.resolutionTest_step2*process.resolutionTest_step3*process.qTester)
-#process.p = cms.Path(process.secondStep)
 process.DQM.collectorHost = ''
 
 EOF
@@ -261,26 +177,13 @@ cat  DTkFactValidation_2_DQM_TEMPL_cfg.py | sed "s?RUNNUMBERTEMPLATE?${runn}?g" 
 
 echo "Starting cmsRun DTkFactValidation_2_DQM_${runn}.cfg"
 cmsRun DTkFactValidation_2_DQM_${runn}_cfg.py >&! DQMResiduals_${runn}.log
-#bsub -q cmscaf -o DQMResiduals_${runn}.log  DTkFactValidation_2_DQM_${runn}_cfg.py 
 
 cp DQM_V*.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
 
 
 echo "Finished cmsRun DTkFactValidation_2_DQM_${runn}.cfg"
-
-#if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/SummaryResiduals_${runn}.root ) ) then
-#    echo "DTkFactValidation_2_DQM`echo $runn`.cfg did not produce root file!"
-#    echo "See SummaryResiduals_${runn}.root for details"
-#    echo "(in your CMSSW test directory)."
-#    exit 1
-#else
-#    rm DTkFactValidation_CRUZET_ttrig_2_${runn}_cfg.py SummaryResiduals_${runn}.log
-#endif
 cd $workDir
-
 echo "DT DQM validation chain completed successfully!"
-
-
 
 
 echo "DT DQMOffline validation started"
