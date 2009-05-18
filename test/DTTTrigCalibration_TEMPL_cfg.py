@@ -1,24 +1,17 @@
-# The following comments couldn't be translated into the new config version:
-
-#Service to write DB if ttrigcalib.findTMeanAndSigma is true
-
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("TTRIGCALIBPROC")
-
 process.load("Configuration.StandardSequences.Geometry_cff")
 
 
-process.load("FrontierConditions_GlobalTag_noesprefer_cff")
-process.GlobalTag.globaltag = "CRAFT_V2P::All"
-
-process.dtDBPrefer = cms.ESPrefer("PoolDBESSource","DTMapping")
+#process.load("FrontierConditions_GlobalTag_noesprefer_cff")
+#process.GlobalTag.globaltag = "CRAFT_V2P::All"
+#process.dtDBPrefer = cms.ESPrefer("PoolDBESSource","DTMapping")
 
 
 process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 process.source = cms.Source("PoolSource",
-    useCSA08Kludge = cms.untracked.bool(True),
     debugFlag = cms.untracked.bool(True),
     debugVebosity = cms.untracked.uint32(10),
     fileNames = cms.untracked.vstring()
@@ -32,9 +25,10 @@ process.maxEvents = cms.untracked.PSet(
 process.load("CalibMuon.DTCalibration.DTTTrigCalibration_cfi")
 process.ttrigcalib.rootFileName = 'DTTimeBoxes.root'
 process.ttrigcalib.kFactor = -0.7
+process.ttrigcalib.digiLabel = 'DIGITEMPLATE'
+
 
 # if read from RAW
-#process.ttrigcalib.digiLabel = 'dtunpacker'
 #process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")
 
 process.DTMapping = cms.ESSource("PoolDBESSource",
@@ -46,13 +40,16 @@ process.DTMapping = cms.ESSource("PoolDBESSource",
     toGet = cms.VPSet(cms.PSet(
     record = cms.string('DTT0Rcd'),
     tag = cms.string('TZEROTEMPLATE')
-    ), 
-                      cms.PSet(
+    ),
+     cms.PSet(
+    record = cms.string('DTReadOutMappingRcd'),
+    tag = cms.string('MAPTEMPLATE'),
+    ),
+    cms.PSet(
     record = cms.string('DTStatusFlagRcd'),
     tag = cms.string('NOISETEMPLATE')
     )),
-    connect = cms.string('oracle://cms_orcoff_prod/CMSCONDVSTEMPLATE'),
-    #        string connect = "frontier://FrontierOn/CMS_COND_ON_18X_DT"
+    connect = cms.string('CMSCONDVSTEMPLATE'),                             
     siteLocalConfig = cms.untracked.bool(False)
 )
 
