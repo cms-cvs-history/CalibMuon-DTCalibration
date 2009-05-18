@@ -167,6 +167,8 @@ endif
 
 cd $workDir
 
+set dumpdb="second"
+
 echo "DT calibration chain completed successfully!"
 ########################################################
 
@@ -191,8 +193,8 @@ source /afs/cern.ch/cms/LCG/LCG-2/UI/cms_ui_env.csh
 cd $cmsswDir
 eval `scramv1 runtime -csh`
 cd DQM/DTMonitorModule/test
-cat crab_DQM_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/crab.cfg
-cat DTkFactValidation_1_TEMPL_cfg.py  | sed "s/MAPTEMPLATE/${mapdb}/g" | sed "s/VDRIFTTEMPLATE/${vdriftdb}/g"| sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g"| sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/DTkFactValidation_1_cfg.py
+cat crab_Valid_TEMPL.cfg  | sed "s?DUMPDBTEMPL?${dumpdb}?g" | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/crab.cfg
+cat DTkFactValidation_1_TEMPL_cfg.py  | sed "s?DUMPDBTEMPL?${dumpdb}?g" | sed "s/MAPTEMPLATE/${mapdb}/g" | sed "s/VDRIFTTEMPLATE/${vdriftdb}/g"| sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g"| sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/DTkFactValidation_1_cfg.py
 
 cd ${workDir}/Run${runn}/Ttrig/Validation
 
