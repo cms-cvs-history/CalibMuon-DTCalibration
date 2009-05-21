@@ -178,7 +178,7 @@ cat  DTkFactValidation_2_DQM_TEMPL_cfg.py | sed "s?RUNNUMBERTEMPLATE?${runn}?g" 
 echo "Starting cmsRun DTkFactValidation_2_DQM_${runn}.cfg"
 cmsRun DTkFactValidation_2_DQM_${runn}_cfg.py >&! DQMResiduals_${runn}.log
 
-cp DQM_V*.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
+mv DQM_V*.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
 
 
 echo "Finished cmsRun DTkFactValidation_2_DQM_${runn}.cfg"
@@ -191,7 +191,7 @@ cd ${cmsswDir}/DQMOffline/CalibMuon/test
 cat DTtTrigDBValidation_ORCONsqlite_TEMP_cfg.py | sed "s?REFTTRIGTEMPLATE?${refttrigdb}?g" | sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g"| sed "s?RUNNUMBERTEMPLATE?${runn}?g"   | sed "s?RUNPERIODTEMPLATE?${runp}?g" >!  DTtTrigDBValidation_ORCONsqlite_${runn}_cfg.py
 cmsRun DTtTrigDBValidation_ORCONsqlite_${runn}_cfg.py >&! DTtTrigDBValidation_${runn}.log
 
-cp tTrigDBMonitoring_${runn}.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
+mv tTrigDBMonitoring_${runn}.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
 
 
 echo "DT DQMOffline validation completed successfully!"
