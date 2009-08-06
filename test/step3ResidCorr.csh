@@ -12,14 +12,15 @@ set runn=$1
 
 set runp=`tail +5 DBTags.dat | grep runperiod | awk '{print $2}'`
 set cmsswarea=`tail +5 DBTags.dat | grep cmsswwa | awk '{print $2}'`
-set conddbversion=`tail +5 DBTags.dat | grep conddbvs | awk '{print $2}'`
 set datasetpath=`tail +5 DBTags.dat | grep dataset | awk '{print $2}'`
-set mapdb=`tail +5 DBTags.dat | grep map | awk '{print $2}'`
-set t0db=`tail +5 DBTags.dat | grep t0 | awk '{print $2}'`
-set noisedb=`tail +5 DBTags.dat | grep noise | awk '{print $2}'`
+set globaltag=`tail +5 DBTags.dat | grep globaltag | awk '{print $2}'`
 set muondigi=`tail +5 DBTags.dat | grep dtDigi | awk '{print $2}'`
-set vdriftdb=`tail +5 DBTags.dat | grep vdrift | awk '{print $2}'`
-set refttrigdb=`tail +5 DBTags.dat | grep refttrig | awk '{print $2}'`
+
+#set conddbversion=`tail +5 DBTags.dat | grep conddbvs | awk '{print $2}'`
+#set mapdb=`tail +5 DBTags.dat | grep map | awk '{print $2}'`
+#set t0db=`tail +5 DBTags.dat | grep t0 | awk '{print $2}'`
+#set noisedb=`tail +5 DBTags.dat | grep noise | awk '{print $2}'`
+#set vdriftdb=`tail +5 DBTags.dat | grep vdrift | awk '{print $2}'`
 
 setenv workDir `pwd`
 setenv cmsswDir "${HOME}/$cmsswarea"
@@ -87,7 +88,6 @@ cd $workDir
 
 echo "DT validation chain completed successfully!"
 
-
 echo "Start DT Residual Correction"
 
 cd ${cmsswDir}/CalibMuon/DTCalibration/test
@@ -95,7 +95,12 @@ cd ${cmsswDir}/CalibMuon/DTCalibration/test
 ##                                                                                          
 ## DTTTrigResidualCorrection.cfg                                                           
 ##                                                                                          
-cat DTTTrigResidualCorrection_TEMPL_cfg.py  | sed "s?VDRIFTTEMPLATE?${vdriftdb}?g"  | sed "s?MAPTEMPLATE?${mapdb}?g" | sed "s?RUNNUMBERTEMPLATE?${runn}?g" | sed "s?RUNPERIODTEMPL?${runp}?g"| sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! DTTTrigResidualCorrection_${runn}_cfg.py  
+#cat DTTTrigResidualCorrection_TEMPL_cfg.py  | sed "s?VDRIFTTEMPLATE?${vdriftdb}?g"  | sed "s?MAPTEMPLATE?${mapdb}?g" | sed "s?RUNNUMBERTEMPLATE?${runn}?g" | sed "s?RUNPERIODTEMPL?${runp}?g"| sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! DTTTrigResidualCorrection_${runn}_cfg.py  
+cat DTTTrigResidualCorrection_TEMPL_cfg.py  | sed "s?GLOBALTAGTEMPLATE?${globaltag}?g" | sed "s?RUNNUMBERTEMPLATE?${runn}?g" | sed "s?RUNPERIODTEMPL?${runp}?g" >! DTTTrigResidualCorrection_${runn}_cfg.py
+
+echo "Creating final db from empty31X.db"
+cp empty31X.db /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/ttrig_ResidCorr_${runn}.db
+
 echo "Starting cmsRun DTTTrigResidualCorrection_${runn}_cfg.py"               
 cmsRun DTTTrigResidualCorrection_${runn}_cfg.py >&! /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTTTrigResidualCorrection_${runn}_log.txt   
 echo "Finished cmsRun DTTTrigResidualCorrection_${runn}_cfg.py"                             
@@ -109,10 +114,7 @@ else
 rm DTTTrigResidualCorrection_${runn}_cfg.py                                              
 endif
 
-
-
 set dumpdb="ResidCorr"
-
 
 ########################################################
 
@@ -120,7 +122,8 @@ set dumpdb="ResidCorr"
 ## DumpDBToFile_ResidCorr.cfg
 ##
 if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/ttrig_ResidCorr_${runn}.txt ) ) then
-cat DumpDBToFile_ttrig_TEMPL_cfg.py | sed "s?DUMPDBTEMPL?${dumpdb}?g"  | sed "s?RUNPERIODTEMPL?${runp}?g"  | sed "s?TEMPLATE?${runn}?g" >! DumpDBToFile_${dumpdb}_${runn}_cfg.py
+
+cat DumpDBToFile_ttrig_TEMPL_cfg.py | sed "s?DUMPDBTEMPL?${dumpdb}?g"  | sed "s?RUNPERIODTEMPL?${runp}?g"  | sed "s?RUNNUMBERTEMPLATE?${runn}?g" >! DumpDBToFile_${dumpdb}_${runn}_cfg.py
 
 echo "Starting cmsRun DumpDBToFile_${dumpdb}_${runn}.cfg"
 cmsRun DumpDBToFile_${dumpdb}_${runn}_cfg.py >&! tmpDumpDBToFile_${dumpdb}_${runn}.log
@@ -166,11 +169,13 @@ echo "DT Residual Correction sarted!"
 
 cd DQM/DTMonitorModule/test
 cat crab_Valid_TEMPL.cfg  | sed "s?DUMPDBTEMPL?${dumpdb}?g" | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/crab.cfg
-cat DTkFactValidation_1_TEMPL_cfg.py | sed "s?DUMPDBTEMPL?${dumpdb}?g"| sed "s?MAPTEMPLATE?${mapdb}?g"   | sed "s?VDRIFTTEMPLATE?${vdriftdb}?g"  | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g"| sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/DTkFactValidation_1_cfg.py
+#cat DTkFactValidation_1_TEMPL_cfg.py | sed "s?DUMPDBTEMPL?${dumpdb}?g"| sed "s?MAPTEMPLATE?${mapdb}?g"   | sed "s?VDRIFTTEMPLATE?${vdriftdb}?g"  | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g"| sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/DTkFactValidation_1_cfg.py
+cat DTkFactValidation_1_TEMPL_cfg.py | sed "s?DUMPDBTEMPL?${dumpdb}?g"| sed "s?GLOBALTAGTEMPLATE?${globaltag}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/DTkFactValidation_1_cfg.py
 
 cd ${workDir}/Run${runn}/Ttrig/Validation
 
 source /afs/cern.ch/cms/ccs/wm/scripts/Crab/crab.csh
+#source /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_5_1/crab.csh
 
 crab -create -submit all
 

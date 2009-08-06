@@ -28,7 +28,7 @@ process.calibDB = cms.ESSource("PoolDBESSource",
         record = cms.string('DTTtrigRcd'),
         tag = cms.string('ttrig')
     )),
-    connect = cms.string('sqlite_file:/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/CRUZET/ttrig/ttrig_second_TEMPLATE.db')
+    connect = cms.string('sqlite_file:/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/CRUZET/ttrig/ttrig_second_RUNNUMBERTEMPLATE.db')
 )
 
 process.dumpToFile = cms.EDFilter("DumpDBToFile",
@@ -41,9 +41,7 @@ process.dumpToFile = cms.EDFilter("DumpDBToFile",
         # VDrift & TTrig
         calibConstGranularity = cms.untracked.string('bySL')
     ),
-    outputFileName = cms.untracked.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/CRUZET/ttrig/ttrig_second_TEMPLATE.txt')
+    outputFileName = cms.untracked.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/CRUZET/ttrig/ttrig_second_RUNNUMBERTEMPLATE.txt')
 )
 
 process.p = cms.Path(process.dumpToFile)
-
-

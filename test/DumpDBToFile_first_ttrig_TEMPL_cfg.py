@@ -1,6 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("DumpDBToFile")
+
 process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 process.source = cms.Source("EmptySource",
@@ -28,7 +29,7 @@ process.calibDB = cms.ESSource("PoolDBESSource",
         record = cms.string('DTTtrigRcd'),
         tag = cms.string('ttrig')
     )),
-    connect = cms.string('sqlite_file:/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/CRUZET/ttrig/ttrig_first_TEMPLATE.db')
+    connect = cms.string('sqlite_file:/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/CRUZET/ttrig/ttrig_first_RUNNUMBERTEMPLATE.db')
 )
 
 process.dumpToFile = cms.EDFilter("DumpDBToFile",
@@ -41,9 +42,7 @@ process.dumpToFile = cms.EDFilter("DumpDBToFile",
         # VDrift & TTrig
         calibConstGranularity = cms.untracked.string('bySL')
     ),
-    outputFileName = cms.untracked.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/CRUZET/ttrig/ttrig_first_TEMPLATE.txt')
+    outputFileName = cms.untracked.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/CRUZET/ttrig/ttrig_first_RUNNUMBERTEMPLATE.txt')
 )
 
 process.p = cms.Path(process.dumpToFile)
-
-
