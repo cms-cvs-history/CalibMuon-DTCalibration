@@ -8,7 +8,8 @@ if ($#argv != 1) then
     exit 1
 endif
 
-set runn=$1
+set runsel=$1 
+set runn=`echo ${runsel}|cut -f1 -d','`
 
 set runp=`tail +5 DBTags.dat | grep runperiod | awk '{print $2}'`
 set cmsswarea=`tail +5 DBTags.dat | grep cmsswwa | awk '{print $2}'`
@@ -46,12 +47,16 @@ if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTk
     endif
 
     cd ${crabDir}/res
-    if( ! -e ./residuals_1.root ) then
-	echo "WARNING: no residuals_xxx.root file found! Exiting!"
-	exit 1
-    endif
+    #if( ! -e ./residuals_1.root ) then
+    #	echo "WARNING: no residuals_xxx.root file found! Exiting!"
+    #	exit 1
+    #endif
 
     hadd DTkFactValidation_${runn}.root residuals_*.root
+    if( ! ( -e DTkFactValidation_${runn}.root ) ) then
+        echo "Could not produce DTkFactValidation_${runn}.root...exiting!"
+        exit 1
+    endif
     cp DTkFactValidation_${runn}.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
 
 endif
@@ -168,8 +173,8 @@ eval `scramv1 runtime -csh`
 echo "DT Residual Correction sarted!"
 
 cd DQM/DTMonitorModule/test
-cat crab_Valid_TEMPL.cfg  | sed "s?DUMPDBTEMPL?${dumpdb}?g" | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/crab.cfg
-#cat DTkFactValidation_1_TEMPL_cfg.py | sed "s?DUMPDBTEMPL?${dumpdb}?g"| sed "s?MAPTEMPLATE?${mapdb}?g"   | sed "s?VDRIFTTEMPLATE?${vdriftdb}?g"  | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g"| sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/DTkFactValidation_1_cfg.py
+#cat crab_Valid_TEMPL.cfg  | sed "s?DUMPDBTEMPL?${dumpdb}?g" | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/crab.cfg
+cat crab_Valid_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runsel}/g" >! ${workDir}/Run${runn}/Ttrig/Validation/crab.cfg
 cat DTkFactValidation_1_TEMPL_cfg.py | sed "s?DUMPDBTEMPL?${dumpdb}?g"| sed "s?GLOBALTAGTEMPLATE?${globaltag}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/DTkFactValidation_1_cfg.py
 
 cd ${workDir}/Run${runn}/Ttrig/Validation

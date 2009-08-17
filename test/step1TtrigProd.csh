@@ -8,7 +8,8 @@ if ($#argv != 1) then
     exit 1
 endif
 
-set runn=$1
+set runsel=$1 
+set runn=`echo ${runsel}|cut -f1 -d','`
 
 set runp=`tail +5 DBTags.dat | grep runperiod | awk '{print $2}'`
 set cmsswarea=`tail +5 DBTags.dat | grep cmsswwa | awk '{print $2}'`
@@ -43,8 +44,8 @@ cd $cmsswDir
 eval `scramv1 runtime -csh`
 
 cd CalibMuon/DTCalibration/test
-cat crab_ttrig_prod_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" >! ${workDir}/Run${runn}/Ttrig/Production/crab.cfg
-#cat DTTTrigCalibration_TEMPL_cfg.py | sed "s/DIGITEMPLATE/${muondigi}/g" | sed "s/MAPTEMPLATE/${mapdb}/g"| sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! ${workDir}/Run${runn}/Ttrig/Production/DTTTrigCalibration_cfg.py
+#cat crab_ttrig_prod_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" >! ${workDir}/Run${runn}/Ttrig/Production/crab.cfg
+cat crab_ttrig_prod_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runsel}/g" >! ${workDir}/Run${runn}/Ttrig/Production/crab.cfg
 cat DTTTrigCalibration_TEMPL_cfg.py | sed "s/DIGITEMPLATE/${muondigi}/g" | sed "s/GLOBALTAGTEMPLATE/${globaltag}/g" >! ${workDir}/Run${runn}/Ttrig/Production/DTTTrigCalibration_cfg.py
 
 cd ${workDir}/Run${runn}/Ttrig/Production

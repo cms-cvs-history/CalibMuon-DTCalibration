@@ -8,7 +8,7 @@ if ($#argv != 1) then
     exit 1
 endif
 
-set runn=$1
+set runn=`echo $1|cut -f1 -d','`
 
 set runp=`tail +5 DBTags.dat | grep runperiod | awk '{print $2}'`
 set cmsswarea=`tail +5 DBTags.dat | grep cmsswwa | awk '{print $2}'`
@@ -16,8 +16,8 @@ set datasetpath=`tail +5 DBTags.dat | grep dataset | awk '{print $2}'`
 set globaltag=`tail +5 DBTags.dat | grep globaltag | awk '{print $2}'`
 set muondigi=`tail +5 DBTags.dat | grep dtDigi | awk '{print $2}'`
 set refttrigdb=`tail +5 DBTags.dat | grep refttrig | awk '{print $2}'`
-set conddbversion=`tail +5 DBTags.dat | grep conddbvs | awk '{print $2}'`
 
+#set conddbversion=`tail +5 DBTags.dat | grep conddbvs | awk '{print $2}'`
 #set mapdb=`tail +5 DBTags.dat | grep map | awk '{print $2}'`
 #set t0db=`tail +5 DBTags.dat | grep t0 | awk '{print $2}'`
 #set noisedb=`tail +5 DBTags.dat | grep noise | awk '{print $2}'`
@@ -31,25 +31,35 @@ source /afs/cern.ch/cms/LCG/LCG-2/UI/cms_ui_env.csh
 cd $cmsswDir
 eval `scramv1 runtime -csh`
 
+cd ${workDir}/Run${runn}/Ttrig/Validation
+
+foreach lastCrab (crab_0_*)
+    set crabDir=$lastCrab
+end
+
 if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTkFactValidation_ResidCorr_${runn}.root ) ) then
-    cd ${workDir}/Run${runn}/Ttrig/Validation
+    #cd ${workDir}/Run${runn}/Ttrig/Validation
 
-    foreach lastCrab (crab_0_*)
-	set crabDir=$lastCrab
-    end
+    #foreach lastCrab (crab_0_*)
+    #    set crabDir=$lastCrab
+    #end
 
-    if( ! ( -e ${crabDir}/res/DTkFactValidation_${runn}.root ) ) then
+    if( ! ( -e ${crabDir}/res/DTkFactValidation_ResidCorr_${runn}.root ) ) then
 	source /afs/cern.ch/cms/ccs/wm/scripts/Crab/crab.csh
 	crab -getoutput
     endif
 
     cd ${crabDir}/res
-    if( ! -e ./DQM_1.root ) then
-	echo "WARNING: no DQM_xxx.root file found! Exiting!"
-	exit 1
-    endif
+    #if( ! -e ./DQM_1.root ) then
+    #	echo "WARNING: no DQM_xxx.root file found! Exiting!"
+    #	exit 1
+    #endif
 
     hadd DTkFactValidation_ResidCorr_${runn}.root residuals_*.root
+    if( ! ( -e DTkFactValidation_ResidCorr_${runn}.root ) ) then
+        echo "Could not produce DTkFactValidation_ResidCorr_${runn}.root...exiting!"
+        exit 1
+    endif
     cp DTkFactValidation_ResidCorr_${runn}.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
 
 endif
@@ -214,8 +224,11 @@ echo "DT DQM validation chain completed successfully!"
 
 echo "DT DQMOffline validation started"
 cd ${cmsswDir}/DQMOffline/CalibMuon/test
-cat DTtTrigDBValidation_ORCONsqlite_TEMPL_cfg.py | sed "s?REFTTRIGTEMPLATE?${refttrigdb}?g" | sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g"| sed "s?RUNNUMBERTEMPLATE?${runn}?g"   | sed "s?RUNPERIODTEMPLATE?${runp}?g" >!  DTtTrigDBValidation_ORCONsqlite_${runn}_cfg.py
-cmsRun DTtTrigDBValidation_ORCONsqlite_${runn}_cfg.py >&! DTtTrigDBValidation_${runn}.log
+#cat DTtTrigDBValidation_ORCONsqlite_TEMPL_cfg.py | sed "s?REFTTRIGTEMPLATE?${refttrigdb}?g" | sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g"| sed "s?RUNNUMBERTEMPLATE?${runn}?g"   | sed "s?RUNPERIODTEMPLATE?${runp}?g" >!  DTtTrigDBValidation_ORCONsqlite_${runn}_cfg.py
+#cmsRun DTtTrigDBValidation_ORCONsqlite_${runn}_cfg.py >&! DTtTrigDBValidation_${runn}.log
+
+cat DTtTrigDBValidation_TEMPL_cfg.py | sed "s?REFTTRIGTEMPLATE?${refttrigdb}?g" | sed "s?RUNNUMBERTEMPLATE?${runn}?g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >!  DTtTrigDBValidation_${runn}_cfg.py
+cmsRun DTtTrigDBValidation_${runn}_cfg.py >&! DTtTrigDBValidation_${runn}.log
 
 mv tTrigDBMonitoring_${runn}.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
 
