@@ -38,21 +38,6 @@ process.source = cms.Source("PoolSource",
        '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/686/C8C8AB3B-1A97-DE11-999B-001D09F29849.root',
        '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/686/1CEB9C08-1D97-DE11-B503-00304879FBB2.root',
        '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/686/08DEF4E2-1A97-DE11-8602-0016177CA7A0.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/665/9428940F-0F97-DE11-B15E-001617E30CC8.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/665/84A424C2-0F97-DE11-8150-001617C3B6FE.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/665/705D1C38-1197-DE11-8872-000423D94908.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/665/6221B742-1597-DE11-A1B7-000423D6BA18.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/665/58924DE7-1397-DE11-9EA6-000423D6CA42.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/665/4C9D11CF-1897-DE11-AD7E-000423D6B48C.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/665/02DC628A-1297-DE11-97A0-001617C3B79A.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/653/E4154CC7-0797-DE11-BDAA-000423D9939C.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/653/CCC9320D-0397-DE11-90C6-001617C3B76E.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/653/48C4D90A-1097-DE11-9B99-001617C3B6DE.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/653/06A817A8-0197-DE11-9168-000423D6CA72.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/650/F065956F-F196-DE11-8C1E-001D09F24637.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/650/D8E68E79-F896-DE11-A211-000423D99A8E.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/650/CE62EB70-EC96-DE11-B6DA-001617E30CE8.root',
-       '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/650/CE5B961A-FE96-DE11-9D21-001D09F29538.root',
        '/store/express/CRAFT09/StreamExpress/ALCARECO/v1/000/112/650/C0A93535-F596-DE11-A43E-000423D985B0.root'
 
 
@@ -61,56 +46,12 @@ process.source = cms.Source("PoolSource",
 )
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10000)
+    input = cms.untracked.int32(100000)
 )
 
-#process.load("CalibMuon.DTCalibration.DTTTrigCalibration_cfi")
-#process.ttrigcalib.rootFileName = 'DTTimeBoxes.root'
-#process.ttrigcalib.kFactor = -0.7
-#process.ttrigcalib.digiLabel = 'muonDTDigis'
 
 # if read from RAW
 #process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")
-
-
-
-#process.dtunpacker = cms.EDFilter("DTUnpackingModule",
-#    dataType = cms.string('DDU'),
-#    useStandardFEDid = cms.untracked.bool(True),
-#    fedbyType = cms.untracked.bool(True),
-#    readOutParameters = cms.PSet(
-#        debug = cms.untracked.bool(False),
-#        rosParameters = cms.PSet(
-#            writeSC = cms.untracked.bool(True),
-#            readingDDU = cms.untracked.bool(True),
-#            performDataIntegrityMonitor = cms.untracked.bool(False),
-#            readDDUIDfromDDU = cms.untracked.bool(True),
-#            debug = cms.untracked.bool(False),
-#            localDAQ = cms.untracked.bool(False)
-#        ),
-#        localDAQ = cms.untracked.bool(False),
-#        performDataIntegrityMonitor = cms.untracked.bool(False)
-#    )
-#)
-
-#process.DTMapping = cms.ESSource("PoolDBESSource",
-#    DBParameters = cms.PSet(
-#        messageLevel = cms.untracked.int32(0),
-#        authenticationPath = cms.untracked.string('/afs/cern.ch/cms/DB/conddb')
-#    ),
-#    timetype = cms.string('runnumber'),
-#    toGet = cms.VPSet(cms.PSet(
-#        record = cms.string('DTReadOutMappingRcd'),
-#        tag = cms.string('map_CRUZET'),
-#        ),
-#        cms.PSet(
-#            record = cms.string('DTTtrigRcd'),
-##            tag = cms.string('TTRIGTEMPLATE')
-#    )),
-#    connect = cms.string('frontier://FrontierProd/CMSCONDVSTEMPLATE'),
-#    #        string connect = "frontier://FrontierOn/CMS_COND_ON_18X_DT"
-#    siteLocalConfig = cms.untracked.bool(False)
-#)
 
 process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     DBParameters = cms.PSet(
@@ -140,7 +81,7 @@ process.noiseCalib = cms.EDFilter("DTNoiseCalibration",
     digiLabel = cms.untracked.string('muonDTDigis'), 
     #Trigger mode
     cosmicRun = cms.untracked.bool(True),
-    debug = cms.untracked.bool(True),
+    debug = cms.untracked.bool(False),
     #The trigger width(ns) (to set if cosmicRun=false)
     TriggerWidth = cms.untracked.int32(25350)
 )
