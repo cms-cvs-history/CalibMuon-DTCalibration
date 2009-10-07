@@ -83,7 +83,8 @@ process.noiseCalib = cms.EDFilter("DTNoiseCalibration",
     cosmicRun = cms.untracked.bool(True),
     debug = cms.untracked.bool(False),
     #The trigger width(ns) (to set if cosmicRun=false)
-    TriggerWidth = cms.untracked.int32(25350)
+    TriggerWidth = cms.untracked.int32(25350),
+    theOffset = cms.untracked.double(100.)
 )
 
 process.noiseComp = cms.EDFilter("DTNoiseComputation",
