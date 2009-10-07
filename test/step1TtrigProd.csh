@@ -16,6 +16,7 @@ set cmsswarea=`tail +5 DBTags.dat | grep cmsswwa | awk '{print $2}'`
 set datasetpath=`tail +5 DBTags.dat | grep dataset | awk '{print $2}'`
 set globaltag=`tail +5 DBTags.dat | grep globaltag | awk '{print $2}'`
 set muondigi=`tail +5 DBTags.dat | grep dtDigi | awk '{print $2}'`
+set email=`tail +5 DBTags.dat | grep email | awk '{print $2}'`
 
 #set conddbversion=`tail +5 DBTags.dat | grep conddbvs | awk '{print $2}'`
 #set mapdb=`tail +5 DBTags.dat | grep map | awk '{print $2}'`
@@ -45,7 +46,7 @@ eval `scramv1 runtime -csh`
 
 cd CalibMuon/DTCalibration/test
 #cat crab_ttrig_prod_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" >! ${workDir}/Run${runn}/Ttrig/Production/crab.cfg
-cat crab_ttrig_prod_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runsel}/g" >! ${workDir}/Run${runn}/Ttrig/Production/crab.cfg
+cat crab_ttrig_prod_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runsel}/g" |sed "s/EMAILTEMPLATE/${email}/g" >! ${workDir}/Run${runn}/Ttrig/Production/crab.cfg
 cat DTTTrigCalibration_TEMPL_cfg.py | sed "s/DIGITEMPLATE/${muondigi}/g" | sed "s/GLOBALTAGTEMPLATE/${globaltag}/g" >! ${workDir}/Run${runn}/Ttrig/Production/DTTTrigCalibration_cfg.py
 
 cd ${workDir}/Run${runn}/Ttrig/Production
