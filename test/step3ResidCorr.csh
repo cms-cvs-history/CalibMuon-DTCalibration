@@ -18,12 +18,6 @@ set globaltag=`tail +5 DBTags.dat | grep globaltag | awk '{print $2}'`
 set muondigi=`tail +5 DBTags.dat | grep dtDigi | awk '{print $2}'`
 set email=`tail +5 DBTags.dat | grep email | awk '{print $2}'`
 
-#set conddbversion=`tail +5 DBTags.dat | grep conddbvs | awk '{print $2}'`
-#set mapdb=`tail +5 DBTags.dat | grep map | awk '{print $2}'`
-#set t0db=`tail +5 DBTags.dat | grep t0 | awk '{print $2}'`
-#set noisedb=`tail +5 DBTags.dat | grep noise | awk '{print $2}'`
-#set vdriftdb=`tail +5 DBTags.dat | grep vdrift | awk '{print $2}'`
-
 setenv workDir `pwd`
 setenv cmsswDir "${HOME}/$cmsswarea"
 
@@ -48,10 +42,10 @@ if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTk
     endif
 
     cd ${crabDir}/res
-    #if( ! -e ./residuals_1.root ) then
-    #	echo "WARNING: no residuals_xxx.root file found! Exiting!"
-    #	exit 1
-    #endif
+    if( ! -e ./residuals_1.root ) then
+    	echo "WARNING: no residuals_xxx.root file found! Exiting!"
+    	exit 1
+    endif
 
     hadd DTkFactValidation_${runn}.root residuals_*.root
     if( ! ( -e DTkFactValidation_${runn}.root ) ) then
@@ -101,7 +95,7 @@ cd ${cmsswDir}/CalibMuon/DTCalibration/test
 ##                                                                                          
 ## DTTTrigResidualCorrection.cfg                                                           
 ##                                                                                          
-#cat DTTTrigResidualCorrection_TEMPL_cfg.py  | sed "s?VDRIFTTEMPLATE?${vdriftdb}?g"  | sed "s?MAPTEMPLATE?${mapdb}?g" | sed "s?RUNNUMBERTEMPLATE?${runn}?g" | sed "s?RUNPERIODTEMPL?${runp}?g"| sed "s/TZEROTEMPLATE/${t0db}/g" | sed "s/NOISETEMPLATE/${noisedb}/g" | sed "s?CMSCONDVSTEMPLATE?${conddbversion}?g" >! DTTTrigResidualCorrection_${runn}_cfg.py  
+
 cat DTTTrigResidualCorrection_TEMPL_cfg.py  | sed "s?GLOBALTAGTEMPLATE?${globaltag}?g" | sed "s?RUNNUMBERTEMPLATE?${runn}?g" | sed "s?RUNPERIODTEMPL?${runp}?g" >! DTTTrigResidualCorrection_${runn}_cfg.py
 
 echo "Creating final db from empty31X.db"
@@ -163,14 +157,13 @@ eval `scramv1 runtime -csh`
 echo "DT Residual Correction sarted!"
 
 cd DQM/DTMonitorModule/test
-#cat crab_Valid_TEMPL.cfg  | sed "s?DUMPDBTEMPL?${dumpdb}?g" | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/crab.cfg
+
 cat crab_Valid_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runsel}/g" | sed "s/EMAILTEMPLATE/${email}/g" >! ${workDir}/Run${runn}/Ttrig/Validation/crab.cfg
 cat DTkFactValidation_1_TEMPL_cfg.py | sed "s?DUMPDBTEMPL?${dumpdb}?g"| sed "s?GLOBALTAGTEMPLATE?${globaltag}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! ${workDir}/Run${runn}/Ttrig/Validation/DTkFactValidation_1_cfg.py
 
 cd ${workDir}/Run${runn}/Ttrig/Validation
 
 source /afs/cern.ch/cms/ccs/wm/scripts/Crab/crab.csh
-#source /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_5_1/crab.csh
 
 crab -create -submit all
 

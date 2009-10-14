@@ -18,12 +18,6 @@ set globaltag=`tail +5 DBTags.dat | grep globaltag | awk '{print $2}'`
 set muondigi=`tail +5 DBTags.dat | grep dtDigi | awk '{print $2}'`
 set email=`tail +5 DBTags.dat | grep email | awk '{print $2}'`
 
-#set conddbversion=`tail +5 DBTags.dat | grep conddbvs | awk '{print $2}'`
-#set mapdb=`tail +5 DBTags.dat | grep map | awk '{print $2}'`
-#set t0db=`tail +5 DBTags.dat | grep t0 | awk '{print $2}'`
-#set noisedb=`tail +5 DBTags.dat | grep noise | awk '{print $2}'`
-#set vdriftdb=`tail +5 DBTags.dat | grep vdrift | awk '{print $2}'`
-
 setenv workDir `pwd`
 setenv cmsswDir "${HOME}/$cmsswarea"
 
@@ -45,14 +39,12 @@ cd $cmsswDir
 eval `scramv1 runtime -csh`
 
 cd CalibMuon/DTCalibration/test
-#cat crab_ttrig_prod_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runn}/g" >! ${workDir}/Run${runn}/Ttrig/Production/crab.cfg
 cat crab_ttrig_prod_TEMPL.cfg | sed "s?DATASETPATHTEMPLATE?${datasetpath}?g" | sed "s/RUNNUMBERTEMPLATE/${runsel}/g" |sed "s/EMAILTEMPLATE/${email}/g" >! ${workDir}/Run${runn}/Ttrig/Production/crab.cfg
 cat DTTTrigCalibration_TEMPL_cfg.py | sed "s/DIGITEMPLATE/${muondigi}/g" | sed "s/GLOBALTAGTEMPLATE/${globaltag}/g" >! ${workDir}/Run${runn}/Ttrig/Production/DTTTrigCalibration_cfg.py
 
 cd ${workDir}/Run${runn}/Ttrig/Production
 
 source /afs/cern.ch/cms/ccs/wm/scripts/Crab/crab.csh
-#source /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_5_1/crab.csh
 
 crab -create -submit all
 cd ${workDir}

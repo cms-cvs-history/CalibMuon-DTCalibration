@@ -17,12 +17,6 @@ set globaltag=`tail +5 DBTags.dat | grep globaltag | awk '{print $2}'`
 set muondigi=`tail +5 DBTags.dat | grep dtDigi | awk '{print $2}'`
 set refttrigdb=`tail +5 DBTags.dat | grep refttrig | awk '{print $2}'`
 
-#set conddbversion=`tail +5 DBTags.dat | grep conddbvs | awk '{print $2}'`
-#set mapdb=`tail +5 DBTags.dat | grep map | awk '{print $2}'`
-#set t0db=`tail +5 DBTags.dat | grep t0 | awk '{print $2}'`
-#set noisedb=`tail +5 DBTags.dat | grep noise | awk '{print $2}'`
-#set vdriftdb=`tail +5 DBTags.dat | grep vdrift | awk '{print $2}'`
-
 setenv workDir `pwd`
 setenv cmsswDir "${HOME}/$cmsswarea"
 
@@ -38,11 +32,6 @@ foreach lastCrab (crab_0_*)
 end
 
 if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTkFactValidation_ResidCorr_${runn}.root ) ) then
-    #cd ${workDir}/Run${runn}/Ttrig/Validation
-
-    #foreach lastCrab (crab_0_*)
-    #    set crabDir=$lastCrab
-    #end
 
     if( ! ( -e ${crabDir}/res/DTkFactValidation_ResidCorr_${runn}.root ) ) then
 	source /afs/cern.ch/cms/ccs/wm/scripts/Crab/crab.csh
@@ -50,10 +39,11 @@ if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTk
     endif
 
     cd ${crabDir}/res
-    #if( ! -e ./DQM_1.root ) then
-    #	echo "WARNING: no DQM_xxx.root file found! Exiting!"
-    #	exit 1
-    #endif
+
+    if( ! -e ./DQM_1.root ) then
+    	echo "WARNING: no DQM_xxx.root file found! Exiting!"
+    	exit 1
+    endif
 
     hadd DTkFactValidation_ResidCorr_${runn}.root residuals_*.root
     if( ! ( -e DTkFactValidation_ResidCorr_${runn}.root ) ) then
@@ -70,6 +60,7 @@ if( ! ( -e /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/DTk
     exit 1
 endif
 
+##
 ##  DTkFactValidation_2_${runn}_cfg.py
 ##
 
@@ -178,22 +169,10 @@ process.qTester = cms.EDFilter("QualityTester",
 )
 
 process.load("DQM.DTMonitorClient.dtResolutionTest_cfi")
-process.modulo1=process.resolutionTest.clone()
-process.modulo1.histoTag2D = 'hResDistVsDist_STEP1' 
-process.modulo1.histoTag  = 'hResDist_STEP1'
-process.modulo1.STEP = 'STEP1'
-
-process.load("DQM.DTMonitorClient.dtResolutionTest_cfi")
-process.modulo2=process.resolutionTest.clone()
-process.modulo2.histoTag2D = 'hResDistVsDist_STEP2' 
-process.modulo2.histoTag  = 'hResDist_STEP2'
-process.modulo2.STEP = 'STEP2'
-
-process.load("DQM.DTMonitorClient.dtResolutionTest_cfi")
-process.modulo3=process.resolutionTest.clone()
-process.modulo3.histoTag2D = 'hResDistVsDist_STEP3' 
-process.modulo3.histoTag  = 'hResDist_STEP3'
-process.modulo3.STEP = 'STEP3'
+process.modulo=process.resolutionTest.clone()
+process.modulo.histoTag2D = 'hResDistVsDist_STEP3' 
+process.modulo.histoTag  = 'hResDist_STEP3'
+process.modulo.STEP = 'STEP3'
 
 process.source.processingMode = "RunsAndLumis"
 process.DQMStore.referenceFileName = ''
@@ -203,7 +182,7 @@ process.DQMStore.collateHistograms = False
 process.EDMtoMEConverter.convertOnEndLumi = True
 process.EDMtoMEConverter.convertOnEndRun = False
 
-process.p = cms.Path(process.EDMtoMEConverter*process.modulo1*process.modulo2*process.modulo3*process.qTester*process.dqmSaver)
+process.p = cms.Path(process.EDMtoMEConverter*process.modulo*process.qTester*process.dqmSaver)
 process.DQM.collectorHost = ''
 
 EOF
@@ -214,9 +193,9 @@ cd ${cmsswDir}/DQM/DTMonitorModule/test
 cat DTkFactValidation_2_DQM_TEMPL_cfg.py | sed "s?RUNNUMBERTEMPLATE?${runn}?g"   | sed "s?RUNPERIODTEMPLATE?${runp}?g" >! DTkFactValidation_2_DQM_${runn}_cfg.py
 
 echo "Starting cmsRun DTkFactValidation_2_DQM_${runn}.cfg"
-#cmsRun DTkFactValidation_2_DQM_${runn}_cfg.py >&! DQMResiduals_${runn}.log
+cmsRun DTkFactValidation_2_DQM_${runn}_cfg.py >&! DQMResiduals_${runn}.log
 
-#mv DQM_V*.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
+mv DQM_V*.root /afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/${runp}/ttrig/
 
 echo "Finished cmsRun DTkFactValidation_2_DQM_${runn}.cfg"
 cd $workDir

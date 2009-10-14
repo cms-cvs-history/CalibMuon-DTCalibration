@@ -46,7 +46,6 @@ process.DTTTrigCorrectionFirst = cms.EDFilter("DTTTrigCorrectionFirst",
     #rmsLimit = cms.untracked.double(2.)                                          
     ttrigMax = cms.untracked.double(600.0),
     ttrigMin = cms.untracked.double(200.0),
-    #rmsLimit = cms.untracked.double(2.)
     rmsLimit = cms.untracked.double(8.)
 )
 

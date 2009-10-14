@@ -24,30 +24,7 @@ process.ttrigcalib.kFactor = -0.7
 process.ttrigcalib.digiLabel = 'DIGITEMPLATE'
 
 # if read from RAW
-#process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")
-
-#process.DTMapping = cms.ESSource("PoolDBESSource",
-#    DBParameters = cms.PSet(
-#        messageLevel = cms.untracked.int32(0),
-#        authenticationPath = cms.untracked.string('/afs/cern.ch/cms/DB/conddb')
-#    ),
-#    timetype = cms.string('runnumber'),
-#    toGet = cms.VPSet(cms.PSet(
-#    record = cms.string('DTT0Rcd'),
-#    tag = cms.string('TZEROTEMPLATE')
-#    ),
-#     cms.PSet(
-#    record = cms.string('DTReadOutMappingRcd'),
-#    tag = cms.string('MAPTEMPLATE'),
-#    ),
-#    cms.PSet(
-#    record = cms.string('DTStatusFlagRcd'),
-#    tag = cms.string('NOISETEMPLATE')
-#    )),
-#    connect = cms.string('CMSCONDVSTEMPLATE'),                             
-#    siteLocalConfig = cms.untracked.bool(False)
-#)
-#process.es_prefer_DTMapping = cms.ESPrefer('PoolDBESSource','DTMapping')
+process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")
 
 process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     DBParameters = cms.PSet(
@@ -61,7 +38,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     ))
 )
 
-process.p = cms.Path(process.ttrigcalib)
+#process.p = cms.Path(process.ttrigcalib)
 
 # if read from RAW
-#process.p = cms.Path(process.muonDTDigis*process.ttrigcalib)
+process.p = cms.Path(process.muonDTDigis*process.ttrigcalib)
