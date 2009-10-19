@@ -168,11 +168,8 @@ process.qTester = cms.EDFilter("QualityTester",
     qtList = cms.untracked.FileInPath('DQM/DTMonitorClient/test/QualityTests_ttrig.xml')
 )
 
-process.load("DQM.DTMonitorClient.dtResolutionTest_cfi")
+process.load("DQM.DTMonitorClient.dtResolutionTestFinalCalib_cfi")
 process.modulo=process.resolutionTest.clone()
-process.modulo.histoTag2D = 'hResDistVsDist_STEP3' 
-process.modulo.histoTag  = 'hResDist_STEP3'
-process.modulo.STEP = 'STEP3'
 
 process.source.processingMode = "RunsAndLumis"
 process.DQMStore.referenceFileName = ''
