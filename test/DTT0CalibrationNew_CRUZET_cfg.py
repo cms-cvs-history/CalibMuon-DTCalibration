@@ -93,7 +93,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     ))
 )
 
-process.t0calib = cms.EDFilter("DTT0CalibrationNew",
+process.t0calib = cms.EDAnalyzer("DTT0CalibrationNew",
     # Cells for which you want the histos (default = None)
     cellsWithHisto = cms.untracked.vstring('-1 8 1 1 3 48', 
         '-1 8 1 1 3 49', 

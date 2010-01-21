@@ -39,7 +39,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     ))
 )
 
-process.DTTTrigCorrectionFirst = cms.EDFilter("DTTTrigCorrectionFirst",
+process.DTTTrigCorrectionFirst = cms.EDAnalyzer("DTTTrigCorrectionFirst",
     debug = cms.untracked.bool(False),
     #ttrigMax = cms.untracked.double(2600.0),
     #ttrigMin = cms.untracked.double(2400.0),
