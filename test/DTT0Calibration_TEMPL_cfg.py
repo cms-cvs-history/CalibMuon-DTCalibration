@@ -103,7 +103,7 @@ if filename:
         # append to wiresToDebug
         wiresToDebug.append(wire)
 
-process.t0calib = cms.EDFilter("DTT0Calibration",
+process.t0calib = cms.EDAnalyzer("DTT0Calibration",
     # Cells for which you want the histos (default = None)
     cellsWithHisto = wiresToDebug,
     # Label to retrieve DT digis from the event

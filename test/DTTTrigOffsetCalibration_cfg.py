@@ -40,7 +40,7 @@ process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
 )
 
-process.dtTTrigOffsetCalibration = cms.EDFilter("DTTTrigOffsetCalibration",
+process.dtTTrigOffsetCalibration = cms.EDAnalyzer("DTTTrigOffsetCalibration",
     # Label to retrieve 4D segments from the event
     recHits4DLabel = cms.InputTag('dt4DSegments'),
     # Switch for the check of noisy channels

@@ -49,7 +49,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
 #    ))
 #)
 
-process.noiseCalib = cms.EDFilter("DTNoiseCalibration",
+process.noiseCalib = cms.EDAnalyzer("DTNoiseCalibration",
     #Define the wheel of interest (to set if fastAnalysis=false)
     wheel = cms.untracked.int32(0),
     #Define the sector of interest (to set if fastAnalysis=false)
@@ -72,7 +72,7 @@ process.noiseCalib = cms.EDFilter("DTNoiseCalibration",
     theOffset = cms.untracked.double(100.)
 )
 
-process.noiseComp = cms.EDFilter("DTNoiseComputation",
+process.noiseComp = cms.EDAnalyzer("DTNoiseComputation",
     debug = cms.untracked.bool(False),
     fastAnalysis = cms.untracked.bool(False),
     #Total number of events	
