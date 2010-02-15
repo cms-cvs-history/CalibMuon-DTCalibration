@@ -37,6 +37,7 @@ process.dumpToFile = cms.EDFilter("DumpDBToFile",
     #untracked string dbToDump = "VDriftDB"
     #untracked string dbToDump = "TZeroDB"
     dbToDump = cms.untracked.string('TTrigDB'),
+    dbLabel = cms.untracked.string(''),
     calibFileConfig = cms.untracked.PSet(
         nFields = cms.untracked.int32(5),
         # VDrift & TTrig

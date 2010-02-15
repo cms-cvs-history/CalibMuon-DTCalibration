@@ -27,6 +27,7 @@ process.calibDB = cms.ESSource("PoolDBESSource",
 process.dumpToFile = cms.EDFilter("DumpDBToFile",
     #Choose what database you want to write
     dbToDump = cms.untracked.string('NoiseDB'),
+    dbLabel = cms.untracked.string(''),
     calibFileConfig = cms.untracked.PSet(
     # Noise    
     nFields = cms.untracked.int32(7),
