@@ -11,12 +11,12 @@ endif
 set runsel=$1 
 set runn=`echo ${runsel}|cut -f1 -d','`
 
-set runp=`tail +5 DBTags.dat | grep runperiod | awk '{print $2}'`
-set cmsswarea=`tail +5 DBTags.dat | grep cmsswwa | awk '{print $2}'`
-set datasetpath=`tail +5 DBTags.dat | grep dataset | awk '{print $2}'`
-set globaltag=`tail +5 DBTags.dat | grep globaltag | awk '{print $2}'`
-set muondigi=`tail +5 DBTags.dat | grep dtDigi | awk '{print $2}'`
-set email=`tail +5 DBTags.dat | grep email | awk '{print $2}'`
+set runp=`tail -n +5 DBTags.dat | grep runperiod | awk '{print $2}'`
+set cmsswarea=`tail -n +5 DBTags.dat | grep cmsswwa | awk '{print $2}'`
+set datasetpath=`tail -n +5 DBTags.dat | grep dataset | awk '{print $2}'`
+set globaltag=`tail -n +5 DBTags.dat | grep globaltag | awk '{print $2}'`
+set muondigi=`tail -n +5 DBTags.dat | grep dtDigi | awk '{print $2}'`
+set email=`tail -n +5 DBTags.dat | grep email | awk '{print $2}'`
 
 setenv workDir `pwd`
 setenv cmsswDir "${HOME}/$cmsswarea"
