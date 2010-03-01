@@ -48,7 +48,7 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(2000)
 )
-process.dtunpacker = cms.EDFilter("DTUnpackingModule",
+process.dtunpacker = cms.EDProducer("DTUnpackingModule",
     dataType = cms.string('DDU'),
     useStandardFEDid = cms.untracked.bool(True),
     fedbyType = cms.untracked.bool(True),
