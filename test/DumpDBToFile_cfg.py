@@ -33,7 +33,7 @@ process.GlobalTag.globaltag = "CRAFT_V14P::All"
 #     connect = cms.string('frontier://FrontierPrep/CMS_COND_31X_All')
 # )
 
-process.dumpToFile = cms.EDFilter("DumpDBToFile",
+process.dumpToFile = cms.EDAnalyzer("DumpDBToFile",
     #Choose what database you want to write
     #untracked string dbToDump = "VDriftDB"
     #untracked string dbToDump = "TZeroDB"
