@@ -18,8 +18,8 @@ process.load("CondCore.DBCommon.CondDBSetup_cfi")
 process.load("DQMServices.Core.DQM_cfg")
 
 process.source = cms.Source("PoolSource",
-    debugFlag = cms.untracked.bool(True),
-    debugVebosity = cms.untracked.uint32(10),
+#    debugFlag = cms.untracked.bool(True),
+#    debugVebosity = cms.untracked.uint32(10),
     fileNames = cms.untracked.vstring()
 )
 
@@ -27,7 +27,7 @@ process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(800000)
 )
 
-process.dtunpacker = cms.EDFilter("DTUnpackingModule",
+process.dtunpacker = cms.EDProducer("DTUnpackingModule",
     dataType = cms.string('DDU'),
     useStandardFEDid = cms.untracked.bool(True),
     fedbyType = cms.untracked.bool(True),

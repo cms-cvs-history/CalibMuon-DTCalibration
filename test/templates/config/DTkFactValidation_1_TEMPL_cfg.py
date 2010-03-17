@@ -29,8 +29,8 @@ process.load("DQMServices.Core.DQM_cfg")
 process.load("RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff")
 
 process.source = cms.Source("PoolSource",
-    debugFlag = cms.untracked.bool(True),
-    debugVebosity = cms.untracked.uint32(10),
+#    debugFlag = cms.untracked.bool(True),
+#    debugVebosity = cms.untracked.uint32(10),
     fileNames = cms.untracked.vstring()
 )
 

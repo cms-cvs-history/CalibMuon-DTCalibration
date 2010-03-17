@@ -20,8 +20,8 @@ process.glbPositionSource = poolDBESSource
 
 process.source = cms.Source("PoolSource",
     useCSA08Kludge = cms.untracked.bool(True),
-    debugFlag = cms.untracked.bool(True),
-    debugVebosity = cms.untracked.uint32(10),
+#    debugFlag = cms.untracked.bool(True),
+#    debugVebosity = cms.untracked.uint32(10),
     fileNames = cms.untracked.vstring('/store/data/CRUZET3/TestEnables/RAW/v4/000/051/384/0069285D-EC54-DD11-A9C7-001D09F23A84.root',
         '/store/data/CRUZET3/TestEnables/RAW/v4/000/051/384/081AAA0D-ED54-DD11-9C3B-000423D94E1C.root',
         '/store/data/CRUZET3/TestEnables/RAW/v4/000/051/384/22F99FB0-EC54-DD11-829B-001D09F24489.root',
@@ -48,7 +48,7 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(2000)
 )
-process.dtunpacker = cms.EDFilter("DTUnpackingModule",
+process.dtunpacker = cms.EDProducer("DTUnpackingModule",
     dataType = cms.string('DDU'),
     useStandardFEDid = cms.untracked.bool(True),
     fedbyType = cms.untracked.bool(True),
