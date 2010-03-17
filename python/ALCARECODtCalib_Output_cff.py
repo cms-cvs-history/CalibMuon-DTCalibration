@@ -4,11 +4,10 @@ import FWCore.ParameterSet.Config as cms
 OutALCARECODtCalib_noDrop = cms.PSet(
     # put this if you have a filter
     SelectEvents = cms.untracked.PSet(
-        SelectEvents = cms.vstring('pathALCARECODtCalib')
+        SelectEvents = cms.vstring('')
     ),
     outputCommands = cms.untracked.vstring( 
         'keep *_dt4DSegments_*_*', 
-        'keep *_dt4DSegmentsNoWire_*_*',
         'keep *_muonDTDigis_*_*', 
         'keep *_dttfDigis_*_*',
         'keep *_gtDigis_*_*',

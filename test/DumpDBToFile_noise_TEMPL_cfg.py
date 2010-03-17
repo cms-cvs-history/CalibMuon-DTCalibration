@@ -11,7 +11,7 @@ process.source = cms.Source("EmptySource",
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(1)
 )
-process.get = cms.EDAnalyzer("DTTtrigPrint")
+process.get = cms.EDFilter("DTTtrigPrint")
 
 process.calibDB = cms.ESSource("PoolDBESSource",
     process.CondDBSetup,
@@ -24,7 +24,7 @@ process.calibDB = cms.ESSource("PoolDBESSource",
     connect = cms.string('sqlite_file:/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/RUNPERIODTEMPL/noise/noise_RUNNUMBERTEMPLATE.db')
 )
 
-process.dumpToFile = cms.EDAnalyzer("DumpDBToFile",
+process.dumpToFile = cms.EDFilter("DumpDBToFile",
     #Choose what database you want to write
     dbToDump = cms.untracked.string('NoiseDB'),
     dbLabel = cms.untracked.string(''),

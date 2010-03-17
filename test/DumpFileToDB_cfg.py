@@ -23,7 +23,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
 
 
 #Module to dump a file into a DB
-process.dumpToDB = cms.EDAnalyzer("DumpFileToDB",
+process.dumpToDB = cms.EDFilter("DumpFileToDB",
                                 calibFileConfig = cms.untracked.PSet(calibConstFileName = cms.untracked.string("ttrig2.txt"),
                                                                      calibConstGranularity = cms.untracked.string('bySL'),
                                                                      nFields = cms.untracked.int32(4)

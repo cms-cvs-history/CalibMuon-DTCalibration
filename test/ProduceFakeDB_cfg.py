@@ -34,7 +34,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     ))
 )
  
-process.prodFakeDb = cms.EDAnalyzer("ProduceFakeDB",
+process.prodFakeDb = cms.EDFilter("ProduceFakeDB",
     dbToProduce = cms.untracked.string('VDriftDB'),
     hitResolution = cms.untracked.double(0.02),
     mapToProduce = cms.untracked.string('VDriftDB'),
