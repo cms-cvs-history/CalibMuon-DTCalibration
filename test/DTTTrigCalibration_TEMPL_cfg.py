@@ -9,8 +9,8 @@ process.GlobalTag.globaltag = "GLOBALTAGTEMPLATE"
 process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 process.source = cms.Source("PoolSource",
-    debugFlag = cms.untracked.bool(True),
-    debugVebosity = cms.untracked.uint32(10),
+#    debugFlag = cms.untracked.bool(True),
+#    debugVebosity = cms.untracked.uint32(10),
     fileNames = cms.untracked.vstring()
 )
 

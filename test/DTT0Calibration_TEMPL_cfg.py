@@ -18,8 +18,8 @@ process.load("CondCore.DBCommon.CondDBSetup_cfi")
 process.load("DQMServices.Core.DQM_cfg")
 
 process.source = cms.Source("PoolSource",
-    debugFlag = cms.untracked.bool(True),
-    debugVebosity = cms.untracked.uint32(10),
+#    debugFlag = cms.untracked.bool(True),
+#    debugVebosity = cms.untracked.uint32(10),
     fileNames = cms.untracked.vstring()
 )
 
