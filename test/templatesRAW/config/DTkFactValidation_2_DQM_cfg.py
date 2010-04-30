@@ -57,7 +57,8 @@ process.dqmSaver.convention = 'Offline'
 process.dqmSaver.workflow = '/Muon/Dt/Test1'
 process.DQMStore.collateHistograms = False
 process.EDMtoMEConverter.convertOnEndLumi = True
-process.EDMtoMEConverter.convertOnEndRun = False
+#process.EDMtoMEConverter.convertOnEndRun = False
+process.EDMtoMEConverter.convertOnEndRun = True
 
 process.p = cms.Path(process.EDMtoMEConverter*process.modulo*process.qTester*process.dqmSaver)
 process.DQM.collectorHost = ''
