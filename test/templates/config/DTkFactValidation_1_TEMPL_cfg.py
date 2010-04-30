@@ -68,7 +68,9 @@ process.DTkFactValidation = cms.EDFilter("DTCalibValidation",
     segment4DLabel = cms.untracked.string('dt4DSegments'),
     debug = cms.untracked.bool(False),
     # Lable to retrieve RecHits from the event
-    recHits1DLabel = cms.untracked.string('dt1DRecHits')
+    recHits1DLabel = cms.untracked.string('dt1DRecHits'),
+    # Detailed analysis
+    detailedAnalysis = cms.untracked.bool(False)
 )
 
 process.FEVT = cms.OutputModule("PoolOutputModule",
