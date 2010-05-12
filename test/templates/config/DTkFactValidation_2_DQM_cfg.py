@@ -1,9 +1,17 @@
 import FWCore.ParameterSet.Config as cms
 
+class config: pass
+config.dqmAtRunEnd = False
+if config.dqmAtRunEnd: config.fileMode = 'FULLMERGE'
+else: config.fileMode = 'NOMERGE'
+
 process = cms.Process("EDMtoMEConvert")
+
+process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("DQMServices.Components.EDMtoMEConverter_cff")
+
 process.options = cms.untracked.PSet(
- fileMode = cms.untracked.string('FULLMERGE')
+ fileMode = cms.untracked.string(config.fileMode)
 )
 
 process.load("Configuration.StandardSequences.Geometry_cff")
@@ -14,33 +22,16 @@ process.load("CondCore.DBCommon.CondDBSetup_cfi")
 process.load("DQMServices.Core.DQM_cfg")
 
 process.source = cms.Source("PoolSource",
-    processingMode = cms.untracked.string("RunsLumisAndEvents"),
+    processingMode = cms.untracked.string("RunsAndLumis"),
     fileNames = cms.untracked.vstring()
 )
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
 )
+
 process.eventInfoProvider = cms.EDFilter("EventCoordinatesSource",
     eventInfoFolder = cms.untracked.string('EventInfo/')
-)
-
-process.MessageLogger = cms.Service("MessageLogger",
-    debugModules = cms.untracked.vstring('resolutionTest_step1', 
-        'resolutionTest_step2', 
-        'resolutionTest_step3'),
-    cout = cms.untracked.PSet(
-        threshold = cms.untracked.string('ERROR'),
-        default = cms.untracked.PSet(
-            limit = cms.untracked.int32(0)
-        ),
-        resolution = cms.untracked.PSet(
-            limit = cms.untracked.int32(10000000)
-        ),
-        noLineBreaks = cms.untracked.bool(True)
-    ),
-    categories = cms.untracked.vstring('resolution'),
-    destinations = cms.untracked.vstring('cout')
 )
 
 process.qTester = cms.EDAnalyzer("QualityTester",
@@ -49,16 +40,24 @@ process.qTester = cms.EDAnalyzer("QualityTester",
 )
 
 process.load("DQM.DTMonitorClient.dtResolutionTestFinalCalib_cfi")
-process.modulo=process.resolutionTest.clone()
 
-process.source.processingMode = "RunsAndLumis"
-process.DQMStore.referenceFileName = ''
-process.dqmSaver.convention = 'Offline'
-process.dqmSaver.workflow = '/Muon/Dt/Test1'
-process.DQMStore.collateHistograms = False
-process.EDMtoMEConverter.convertOnEndLumi = True
-#process.EDMtoMEConverter.convertOnEndRun = False
-process.EDMtoMEConverter.convertOnEndRun = True
+if config.dqmAtRunEnd:
+    process.DQMStore.referenceFileName = ''
+    process.dqmSaver.convention = 'Offline'
+    process.dqmSaver.workflow = '/Muon/Dt/Calib'
+    process.DQMStore.collateHistograms = False
+    process.EDMtoMEConverter.convertOnEndLumi = True
+    process.EDMtoMEConverter.convertOnEndRun = True
+else:
+    process.DQMStore.referenceFileName = ''
+    process.dqmSaver.convention = 'Offline'
+    process.dqmSaver.workflow = '/Muon/Dt/Calib'
+    process.DQMStore.collateHistograms = True
+    process.EDMtoMEConverter.convertOnEndLumi = True
+    process.EDMtoMEConverter.convertOnEndRun = True
+    process.dqmSaver.saveByRun = -1
+    process.dqmSaver.saveAtJobEnd = True  
+    process.dqmSaver.forceRunNumber = 1
 
-process.p = cms.Path(process.EDMtoMEConverter*process.modulo*process.qTester*process.dqmSaver)
+process.p = cms.Path(process.EDMtoMEConverter*process.resolutionTest*process.qTester*process.dqmSaver)
 process.DQM.collectorHost = ''
