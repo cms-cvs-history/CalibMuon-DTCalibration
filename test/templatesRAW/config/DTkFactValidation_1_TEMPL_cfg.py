@@ -2,6 +2,9 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("PROD")
 
+process.load("FWCore.MessageService.MessageLogger_cfi")
+
+"""
 process.MessageLogger = cms.Service("MessageLogger",
     debugModules = cms.untracked.vstring('resolutionTest_step1',
         'resolutionTest_step2',
@@ -19,6 +22,7 @@ process.MessageLogger = cms.Service("MessageLogger",
     categories = cms.untracked.vstring('resolution'),
     destinations = cms.untracked.vstring('cout')
 )
+"""
 
 process.load("Configuration.StandardSequences.Geometry_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
@@ -26,7 +30,8 @@ process.GlobalTag.globaltag = "@@GLOBALTAG@@"
 
 process.load("CondCore.DBCommon.CondDBSetup_cfi")
 process.load("DQMServices.Core.DQM_cfg")
-process.load("RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff")
+#process.load("RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff")
+process.load("RecoLocalMuon.Configuration.RecoLocalMuon_cff")
 
 process.source = cms.Source("PoolSource",
 #    debugFlag = cms.untracked.bool(True),
@@ -68,7 +73,9 @@ process.DTkFactValidation = cms.EDFilter("DTCalibValidation",
     segment4DLabel = cms.untracked.string('dt4DSegments'),
     debug = cms.untracked.bool(False),
     # Lable to retrieve RecHits from the event
-    recHits1DLabel = cms.untracked.string('dt1DRecHits')
+    recHits1DLabel = cms.untracked.string('dt1DRecHits'),
+    # Detailed analysis
+    detailedAnalysis = cms.untracked.bool(False)
 )
 
 process.FEVT = cms.OutputModule("PoolOutputModule",
