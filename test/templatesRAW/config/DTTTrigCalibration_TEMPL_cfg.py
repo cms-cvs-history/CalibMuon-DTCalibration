@@ -28,7 +28,7 @@ process.ttrigcalib.kFactor = -0.7
 process.ttrigcalib.digiLabel = '@@MUDIGILABEL@@'
 
 # if read from RAW
-process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")
+#process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")
 
 process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     DBParameters = cms.PSet(
@@ -42,7 +42,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     ))
 )
 
-#process.p = cms.Path(process.ttrigcalib)
+process.p = cms.Path(process.ttrigcalib)
 
 # if read from RAW
-process.p = cms.Path(process.muonDTDigis*process.ttrigcalib)
+#process.p = cms.Path(process.muonDTDigis*process.ttrigcalib)
