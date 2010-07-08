@@ -3,6 +3,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("TTRIGVALIDPROC")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
+process.MessageLogger.cerr.threshold = 'WARNING'
 
 """
 process.MessageLogger = cms.Service("MessageLogger",
@@ -78,19 +79,25 @@ process.DTkFactValidation = cms.EDFilter("DTCalibValidation",
     detailedAnalysis = cms.untracked.bool(False)
 )
 
-process.FEVT = cms.OutputModule("PoolOutputModule",
-               outputCommands = cms.untracked.vstring('drop *', 
-                                'keep *_MEtoEDMConverter_*_*'),
-               fileName = cms.untracked.string('DQM.root')
-                               )
+process.output = cms.OutputModule("PoolOutputModule",
+                  outputCommands = cms.untracked.vstring(
+                      'drop *', 
+                      'keep *_MEtoEDMConverter_*_*'),
+                  fileName = cms.untracked.string('DQM.root'),
+                  SelectEvents = cms.untracked.PSet(
+                      SelectEvents = cms.vstring('analysis_step')
+                  )
+)
 process.load("DQMServices.Components.MEtoEDMConverter_cff")
-process.dummyProducer = cms.EDProducer("ThingWithMergeProducer")
+#process.dummyProducer = cms.EDProducer("ThingWithMergeProducer")
 
 # if read from RAW
 #process.firstStep = cms.Sequence(process.muonDTDigis*process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation)
 #process.firstStep = cms.Sequence(process.dummyProducer + process.muonDTDigis*process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation*process.MEtoEDMConverter)
-process.firstStep = cms.Sequence(process.dummyProducer + process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation*process.MEtoEDMConverter)
+#process.firstStep = cms.Sequence(process.dummyProducer + process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation*process.MEtoEDMConverter)
 
-process.p = cms.Path(process.firstStep)
-process.outpath = cms.EndPath(process.FEVT)
+process.dtValidSequence = cms.Sequence(process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation*process.MEtoEDMConverter)
+
+process.analysis_step = cms.Path(process.dtValidSequence)
+process.out_step = cms.EndPath(process.output)
 process.DQM.collectorHost = ''
