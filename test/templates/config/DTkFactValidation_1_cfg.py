@@ -96,8 +96,9 @@ process.load("DQMServices.Components.MEtoEDMConverter_cff")
 #process.firstStep = cms.Sequence(process.dummyProducer + process.muonDTDigis*process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation*process.MEtoEDMConverter)
 #process.firstStep = cms.Sequence(process.dummyProducer + process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation*process.MEtoEDMConverter)
 
-process.dtValidSequence = cms.Sequence(process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation*process.MEtoEDMConverter)
+process.dtValidSequence = cms.Sequence(process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation)
 
 process.analysis_step = cms.Path(process.dtValidSequence)
+process.endjob_step = cms.Path(process.MEtoEDMConverter)
 process.out_step = cms.EndPath(process.output)
 process.DQM.collectorHost = ''
