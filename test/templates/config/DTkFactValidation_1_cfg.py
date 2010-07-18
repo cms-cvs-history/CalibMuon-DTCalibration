@@ -64,7 +64,7 @@ process.eventInfoProvider = cms.EDFilter("EventCoordinatesSource",
     eventInfoFolder = cms.untracked.string('EventInfo/')
 )
 
-process.DTkFactValidation = cms.EDFilter("DTCalibValidation",
+process.DTkFactValidation = cms.EDAnalyzer("DTCalibValidation",
     # Write the histos on file
     OutputMEsInRootFile = cms.bool(True),
     # Lable to retrieve 2D segments from the event
@@ -83,10 +83,10 @@ process.output = cms.OutputModule("PoolOutputModule",
                   outputCommands = cms.untracked.vstring(
                       'drop *', 
                       'keep *_MEtoEDMConverter_*_*'),
-                  fileName = cms.untracked.string('DQM.root'),
-                  SelectEvents = cms.untracked.PSet(
-                      SelectEvents = cms.vstring('analysis_step')
-                  )
+                  fileName = cms.untracked.string('DQM.root')
+                  #SelectEvents = cms.untracked.PSet(
+                  #    SelectEvents = cms.vstring('analysis_step')
+                  #)
 )
 process.load("DQMServices.Components.MEtoEDMConverter_cff")
 #process.dummyProducer = cms.EDProducer("ThingWithMergeProducer")
@@ -98,7 +98,6 @@ process.load("DQMServices.Components.MEtoEDMConverter_cff")
 
 process.dtValidSequence = cms.Sequence(process.dt1DRecHits*process.dt2DSegments*process.dt4DSegments*process.DTkFactValidation)
 
-process.analysis_step = cms.Path(process.dtValidSequence)
-process.endjob_step = cms.Path(process.MEtoEDMConverter)
+process.analysis_step = cms.Path(process.dtValidSequence*process.MEtoEDMConverter)
 process.out_step = cms.EndPath(process.output)
 process.DQM.collectorHost = ''
