@@ -28,5 +28,6 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
 process.load("CalibMuon.DTCalibration.DTTTrigWriter_cfi")
 process.ttrigwriter.kFactor = -0.7
 process.ttrigwriter.rootFileName = 'DTTimeBoxes.root'
+process.ttrigwriter.debug = False
 
 process.p = cms.Path(process.ttrigwriter)
