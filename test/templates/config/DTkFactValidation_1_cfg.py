@@ -5,26 +5,6 @@ process = cms.Process("TTRIGVALIDPROC")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.threshold = 'WARNING'
 
-"""
-process.MessageLogger = cms.Service("MessageLogger",
-    debugModules = cms.untracked.vstring('resolutionTest_step1',
-        'resolutionTest_step2',
-        'resolutionTest_step3'),
-    cout = cms.untracked.PSet(
-        threshold = cms.untracked.string('ERROR'),
-        default = cms.untracked.PSet(
-            limit = cms.untracked.int32(0)
-        ),
-        resolution = cms.untracked.PSet(
-            limit = cms.untracked.int32(10000000)
-        ),
-        noLineBreaks = cms.untracked.bool(True)
-    ),
-    categories = cms.untracked.vstring('resolution'),
-    destinations = cms.untracked.vstring('cout')
-)
-"""
-
 process.load("Configuration.StandardSequences.Geometry_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = ''
@@ -35,8 +15,6 @@ process.load("DQMServices.Core.DQM_cfg")
 process.load("RecoLocalMuon.Configuration.RecoLocalMuon_cff")
 
 process.source = cms.Source("PoolSource",
-#    debugFlag = cms.untracked.bool(True),
-#    debugVebosity = cms.untracked.uint32(10),
     fileNames = cms.untracked.vstring()
 )
 
@@ -44,6 +22,7 @@ process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
 )
 
+"""
 process.calibDB = cms.ESSource("PoolDBESSource",
     process.CondDBSetup,
     timetype = cms.string('runnumber'),
@@ -56,6 +35,7 @@ process.calibDB = cms.ESSource("PoolDBESSource",
     authenticationMethod = cms.untracked.uint32(0)
 )
 process.es_prefer_calibDB = cms.ESPrefer('PoolDBESSource','calibDB')
+"""
 
 # if read from RAW
 #process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")

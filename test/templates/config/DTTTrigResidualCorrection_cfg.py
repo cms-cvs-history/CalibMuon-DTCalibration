@@ -29,6 +29,7 @@ process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(1)
 )
 
+"""
 process.ttrig = cms.ESSource("PoolDBESSource",
     process.CondDBSetup,
     timetype = cms.string('runnumber'),
@@ -40,6 +41,7 @@ process.ttrig = cms.ESSource("PoolDBESSource",
     authenticationMethod = cms.untracked.uint32(0)
 )
 process.es_prefer_ttrig = cms.ESPrefer('PoolDBESSource','ttrig')
+"""
 
 process.PoolDBOutputService = cms.Service("PoolDBOutputService",
     process.CondDBSetup,
