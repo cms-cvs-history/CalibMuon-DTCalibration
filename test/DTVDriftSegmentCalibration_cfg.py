@@ -40,7 +40,7 @@ process.options = cms.untracked.PSet(
     wantSummary = cms.untracked.bool(True)
 )
 
-process.dtVDriftCalibration = cms.EDAnalyzer("DTVDriftT0FitCalibration",
+process.dtVDriftCalibration = cms.EDAnalyzer("DTVDriftSegmentCalibration",
     recHits4DLabel = cms.InputTag('dt4DSegments'),
     rootFileName = cms.untracked.string('DTVDriftHistos.root'),
     # Choose the chamber you want to calibrate (default = "All"), specify the chosen chamber
