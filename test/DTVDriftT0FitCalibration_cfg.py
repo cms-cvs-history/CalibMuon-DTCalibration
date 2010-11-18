@@ -10,7 +10,7 @@ process.MessageLogger.cerr =  cms.untracked.PSet(
      threshold = cms.untracked.string('DEBUG'),
      noLineBreaks = cms.untracked.bool(False),
      DEBUG = cms.untracked.PSet(limit = cms.untracked.int32(0)),
-     INFO = cms.untracked.PSet(limit = cms.untracked.int32(0)),
+     INFO = cms.untracked.PSet(limit = cms.untracked.int32(-1)),
      Calibration = cms.untracked.PSet(limit = cms.untracked.int32(-1))
 )
 
@@ -27,16 +27,13 @@ process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")
 process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(
-        '/store/data/Run2010B/Mu/RAW-RECO/v2/000/149/711/F67961F1-F0E7-DF11-A2C8-90E6BA19A22E.root',
-        '/store/data/Run2010B/Mu/RAW-RECO/v2/000/149/709/C29F6BC9-DBE7-DF11-B1B4-E0CB4E19F9A6.root',
-        '/store/data/Run2010B/Mu/RAW-RECO/v2/000/149/510/164F69F5-9FE7-DF11-9026-E0CB4E29C50B.root',
-        '/store/data/Run2010B/Mu/RAW-RECO/v2/000/149/509/144B4A0E-4DE7-DF11-943B-485B39800C32.root'
-    )
+    fileNames = cms.untracked.vstring()
 )
+from fileNames_WZSkim import fileNames as fileNamesWZ
+process.source.fileNames = fileNamesWZ 
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(5000)
 )
 
 process.options = cms.untracked.PSet(
@@ -45,7 +42,7 @@ process.options = cms.untracked.PSet(
 
 process.dtVDriftCalibration = cms.EDAnalyzer("DTVDriftT0FitCalibration",
     recHits4DLabel = cms.InputTag('dt4DSegments'),
-    rootFileName = cms.untracked.string('/tmp/antoniov/DTVDriftHistos.root'),
+    rootFileName = cms.untracked.string('DTVDriftHistos.root'),
     # Choose the chamber you want to calibrate (default = "All"), specify the chosen chamber
     # in the format "wheel station sector" (i.e. "-1 3 10")
     calibChamber = cms.untracked.string('All'),
