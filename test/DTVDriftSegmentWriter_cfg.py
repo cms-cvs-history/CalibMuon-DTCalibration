@@ -43,7 +43,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
 process.dtVDriftWriter = cms.EDAnalyzer("DTVDriftWriter",
     vDriftAlgo = cms.string('DTVDriftSegment'),
     vDriftAlgoConfig = cms.PSet(
-        rootFileName = cms.string('DTVDriftHistos_WZSkim.root'),
+        rootFileName = cms.string('DTVDriftHistos_WZSkim_All.root'),
         nSigmasFitRange = cms.untracked.uint32(1),
         debug = cms.untracked.bool(True)
     )

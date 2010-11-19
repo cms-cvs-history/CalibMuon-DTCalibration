@@ -29,7 +29,8 @@ process.load("CondCore.DBCommon.CondDBSetup_cfi")
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring()
 )
-from fileNames_WZSkim import fileNames as fileNamesWZ
+#from fileNames_WZSkim_Mu_Run2010B_WZMuFilter_v2 import fileNames as fileNamesWZ
+from fileNames_WZSkim_Mu_Run2010B_WZMu_v2 import fileNames as fileNamesWZ
 process.source.fileNames = fileNamesWZ 
 
 process.maxEvents = cms.untracked.PSet(

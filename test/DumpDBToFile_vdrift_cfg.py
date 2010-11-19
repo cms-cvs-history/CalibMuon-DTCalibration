@@ -19,7 +19,7 @@ process.calibDB = cms.ESSource("PoolDBESSource",
         record = cms.string('DTMtimeRcd'),
         tag = cms.string('vDrift')
     )),
-    connect = cms.string('sqlite_file:vDrift.db')
+    connect = cms.string('sqlite_file:vDrift_mergeSectors.db')
 )
 
 process.dumpToFile = cms.EDAnalyzer("DumpDBToFile",
@@ -30,7 +30,7 @@ process.dumpToFile = cms.EDAnalyzer("DumpDBToFile",
         # VDrift & TTrig
         calibConstGranularity = cms.untracked.string('bySL')
     ),
-    outputFileName = cms.untracked.string('vDrift.txt')
+    outputFileName = cms.untracked.string('vDrift_mergeSectors.txt')
 )
 
 process.p = cms.Path(process.dumpToFile)
