@@ -10,7 +10,7 @@ process.MessageLogger.cerr =  cms.untracked.PSet(
      threshold = cms.untracked.string('DEBUG'),
      noLineBreaks = cms.untracked.bool(False),
      DEBUG = cms.untracked.PSet(limit = cms.untracked.int32(0)),
-     INFO = cms.untracked.PSet(limit = cms.untracked.int32(-1)),
+     INFO = cms.untracked.PSet(limit = cms.untracked.int32(0)),
      Calibration = cms.untracked.PSet(limit = cms.untracked.int32(-1))
 )
 
@@ -33,7 +33,7 @@ from fileNames_WZSkim import fileNames as fileNamesWZ
 process.source.fileNames = fileNamesWZ 
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(5000)
+    input = cms.untracked.int32(-1)
 )
 
 process.options = cms.untracked.PSet(
