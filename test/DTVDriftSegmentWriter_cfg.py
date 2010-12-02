@@ -16,13 +16,13 @@ process.MessageLogger.cerr =  cms.untracked.PSet(
 
 process.load("Configuration.StandardSequences.Geometry_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = 'GR_R_38X_V14::All'
+process.GlobalTag.globaltag = 'FT_R_38X_V14A::All'
 
 process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 process.source = cms.Source("EmptySource",
     numberEventsInRun = cms.untracked.uint32(1),
-    firstRun = cms.untracked.uint32(144045)
+    firstRun = cms.untracked.uint32(149711)
 )
 
 process.maxEvents = cms.untracked.PSet(
@@ -43,7 +43,8 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
 process.dtVDriftWriter = cms.EDAnalyzer("DTVDriftWriter",
     vDriftAlgo = cms.string('DTVDriftSegment'),
     vDriftAlgoConfig = cms.PSet(
-        rootFileName = cms.string('DTVDriftHistos_WZSkim_All.root'),
+        #rootFileName = cms.string('DTVDriftHistos_WZSkim_All.root'),
+        rootFileName = cms.string('DTVDriftHistos_Mu_Run2010B_WZMu_Nov4Skim_v1_merged_new.root'),
         nSigmasFitRange = cms.untracked.uint32(1),
         debug = cms.untracked.bool(True)
     )

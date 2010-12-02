@@ -44,6 +44,17 @@ process.options = cms.untracked.PSet(
     wantSummary = cms.untracked.bool(True)
 )
 
+process.ttrig = cms.ESSource("PoolDBESSource",
+    process.CondDBSetup,
+    authenticationMethod = cms.untracked.uint32(0),
+    toGet = cms.VPSet(cms.PSet(
+        record = cms.string('DTTtrigRcd'),
+        tag = cms.string('DTTtrig_V01_offline')
+    )),
+    connect = cms.string('frontier://FrontierProd/CMS_COND_31X_DT')
+)
+process.es_prefer_ttrig = cms.ESPrefer('PoolDBESSource','ttrig')
+
 process.dtVDriftCalibration = cms.EDAnalyzer("DTVDriftCalibration",
     recHits4DLabel = cms.InputTag('dt4DSegments'), 
     rootFileName = cms.untracked.string('DTTMaxHistos.root'),

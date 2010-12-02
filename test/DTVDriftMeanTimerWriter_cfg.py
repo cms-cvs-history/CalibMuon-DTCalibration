@@ -1,5 +1,10 @@
 import FWCore.ParameterSet.Config as cms
 
+class config: pass
+#config.dtTMaxHistosFileName = 'DTTMaxHistos_144045_149442_7TeV_Nov4ReReco_MuonPhys.root'
+config.dtTMaxHistosFileName = 'DTTMaxHistos_144045_149442_7TeV_Nov4ReReco_MuonPhys_newTTrig.root'
+config.runNumber = 149442
+
 process = cms.Process("DTVDriftWriter")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
@@ -22,7 +27,7 @@ process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 process.source = cms.Source("EmptySource",
     numberEventsInRun = cms.untracked.uint32(1),
-    firstRun = cms.untracked.uint32(149711)
+    firstRun = cms.untracked.uint32(config.runNumber)
 )
 
 process.maxEvents = cms.untracked.PSet(
@@ -43,7 +48,7 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
 process.dtVDriftWriter = cms.EDAnalyzer("DTVDriftWriter",
     vDriftAlgo = cms.string('DTVDriftMeanTimer'),
     vDriftAlgoConfig = cms.PSet(
-        rootFileName = cms.string('DTTMaxHistos.root'),
+        rootFileName = cms.string(config.dtTMaxHistosFileName),
         debug = cms.untracked.bool(True)
     )
 )

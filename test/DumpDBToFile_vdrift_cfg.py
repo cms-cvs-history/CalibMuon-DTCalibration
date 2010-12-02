@@ -1,5 +1,9 @@
 import FWCore.ParameterSet.Config as cms
 
+from Utilities.PyConfigTools.parseInput import parseInput
+inputFields = ('vDriftDB',)
+inputOptions = parseInput(inputFields,requiredFields=inputFields)
+
 process = cms.Process("DumpDBToFile")
 process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
@@ -19,7 +23,7 @@ process.calibDB = cms.ESSource("PoolDBESSource",
         record = cms.string('DTMtimeRcd'),
         tag = cms.string('vDrift')
     )),
-    connect = cms.string('sqlite_file:vDrift_mergeSectors.db')
+    connect = cms.string('sqlite_file:%s' % inputOptions.vDriftDB)
 )
 
 process.dumpToFile = cms.EDAnalyzer("DumpDBToFile",
@@ -30,7 +34,7 @@ process.dumpToFile = cms.EDAnalyzer("DumpDBToFile",
         # VDrift & TTrig
         calibConstGranularity = cms.untracked.string('bySL')
     ),
-    outputFileName = cms.untracked.string('vDrift_mergeSectors.txt')
+    outputFileName = cms.untracked.string('%s.txt' % inputOptions.vDriftDB.split('.')[0])
 )
 
 process.p = cms.Path(process.dumpToFile)

@@ -16,7 +16,7 @@ process.MessageLogger.cerr =  cms.untracked.PSet(
 
 process.load("Configuration.StandardSequences.Geometry_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = "GR_R_38X_V14::All"
+process.GlobalTag.globaltag = "FT_R_38X_V14A::All"
 
 process.load("RecoLocalMuon.Configuration.RecoLocalMuon_cff")
 process.dt2DSegments.Reco2DAlgoConfig.performT0_vdriftSegCorrection = True
@@ -27,11 +27,15 @@ process.load("EventFilter.DTRawToDigi.dtunpacker_cfi")
 process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring()
+    fileNames = cms.untracked.vstring(),
+    lumisToProcess = cms.untracked.VLuminosityBlockRange()
 )
 #from fileNames_WZSkim_Mu_Run2010B_WZMuFilter_v2 import fileNames as fileNamesWZ
-from fileNames_WZSkim_Mu_Run2010B_WZMu_v2 import fileNames as fileNamesWZ
-process.source.fileNames = fileNamesWZ 
+#from fileNames_WZSkim_Mu_Run2010B_WZMu_v2 import fileNames as fileNamesWZ
+from fileNames_Mu_Run2010B_WZMu_Nov4Skim_v1 import fileNames
+process.source.fileNames = fileNames 
+from lumisToProcess_136033_149442_7TeV_Nov4ReReco_MuonPhys import lumisToProcess
+process.source.lumisToProcess = lumisToProcess
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
