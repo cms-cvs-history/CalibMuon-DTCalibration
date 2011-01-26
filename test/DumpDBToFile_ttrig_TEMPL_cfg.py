@@ -6,12 +6,13 @@ process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 process.source = cms.Source("EmptySource",
     numberEventsInRun = cms.untracked.uint32(1),
-    firstRun = cms.untracked.uint32(1)
+    firstRun = cms.untracked.uint32(149442)
 )
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(1)
 )
+
 process.get = cms.EDAnalyzer("DTTtrigPrint")
 
 process.calibDB = cms.ESSource("PoolDBESSource",
@@ -27,9 +28,9 @@ process.calibDB = cms.ESSource("PoolDBESSource",
         #string tag = "t0_GRUMM"
         # TTrig
         record = cms.string('DTTtrigRcd'),
-        tag = cms.string('ttrig')
+        tag = cms.string('DT_tTrig_cosmics_2009_v3_prompt')
     )),
-    connect = cms.string('sqlite_file:/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/RUNPERIODTEMPL/ttrig/ttrig_DUMPDBTEMPL_RUNNUMBERTEMPLATE.db')
+    connect = cms.string('frontier://FrontierProd/CMS_COND_31X_DT')
 )
 
 process.dumpToFile = cms.EDAnalyzer("DumpDBToFile",
@@ -43,7 +44,7 @@ process.dumpToFile = cms.EDAnalyzer("DumpDBToFile",
         # VDrift & TTrig
         calibConstGranularity = cms.untracked.string('bySL')
     ),
-    outputFileName = cms.untracked.string('/afs/cern.ch/cms/CAF/CMSALCA/ALCA_MUONCALIB/DTCALIB/RUNPERIODTEMPL/ttrig/ttrig_DUMPDBTEMPL_RUNNUMBERTEMPLATE.txt')
+    outputFileName = cms.untracked.string('ttrig_DT_tTrig_cosmics_2009_v3_prompt_149442.txt')
 )
 
 process.p = cms.Path(process.dumpToFile)
