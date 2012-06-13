@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2010/08/17 23:05:35 $
- *  $Revision: 1.6 $
+ *  $Date: 2010/11/19 15:17:51 $
+ *  $Revision: 1.7 $
  *  \author A. Vilela Pereira
  */
 
@@ -35,6 +35,7 @@
 
 #include <string>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 using namespace edm;
